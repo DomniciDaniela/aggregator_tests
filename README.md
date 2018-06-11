@@ -25,9 +25,13 @@ Example: testYouAndYourInsuranceElementsPageVisibility_2018.06.05.12.30.31.png
 # How to run these tests on other test environments/endpoints than provided in test cases?
 You can update the urls from 'TestConfig' sheet, by changing the following values :
 ~ Soap Test Environment -> the SOAP POST request endpoint (e.g.: http://e1b-eswls-tstd-01.es-dte.co.uk:7012/ibisservice/ibisservice)
+
 ~ WebApp Test Environment -> environment for the web aggragator url
+
 ~ IsDevEnvironment (Y/N) -> If you want to run on dev environment set the flag Y otherwise N
+
 ~ Soap Dev Environment -> the SOAP POST request endpoint (e.g.: http://e1a-eswls-devd-01.es-dte.co.uk:7012/ibisservice/ibisservice)
+
 ~ WebApp Dev Environment -> environment for the web aggragator url
 
 
