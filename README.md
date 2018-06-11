@@ -2,14 +2,15 @@
 
 This project is based on MAVEN and jUnit.
 
-#Project structure:
+# Project structure:
 
 -> 'drivers' -> all drivers/browsers required for local run. Example: Firefox, Chrome, InternetExplorer.
 -> 'Screenshots' -> the location of screenshots when the test is failed. The screenshot name is a concatenation between the method name and the date when the test failed.
 Example: testYouAndYourInsuranceElementsPageVisibility_2018.06.05.12.30.31.png
 -> 'src/main/java/helpers' -> includes the classes used for avoid the code duplication and utilities
 
-    The 'TestBase' class contains the logic on opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
+  The 'TestBase' class contains the logic on opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
+    
 -> 'src/main/java/screens' -> contains methods for each page (home + motor)
 -> 'src/test/java/' -> contains all test cases for motor AND home. A testcase corresponds to a single row defined in the 'GoCompareMotorAggregator' and 'ConfusedHomeAggregator' files.
 
@@ -30,7 +31,7 @@ You can update the urls from 'TestConfig' sheet, by changing the following value
 ~ WebApp Dev Environment -> environment for the web aggragator url
 
 
-#These tests can be run from IDE or from command line(terminal/command prompt).
+# These tests can be run from IDE or from command line(terminal/command prompt).
 How to run tests from command line?
 You can run the tests locally from command line only if you have set M2_HOME (maven) as an environment variable.
 (More info: http://www.baeldung.com/install-maven-on-windows-linux-mac)
