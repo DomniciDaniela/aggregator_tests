@@ -1,6 +1,15 @@
 # aggregator_tests framework
 
-This project is based on MAVEN and jUnit.
+This project is based on MAVEN.
+
+# Tools and Technologies:
+~ REST Assured -> API testing (generates the quoteID)
+
+~ Selenium Webdriver and Selenium Standalone Server -> Browser testing (the entire web flow)
+
+~ jUnit -> testing framework
+
+~ Java -> programming language
 
 # Project structure:
 
