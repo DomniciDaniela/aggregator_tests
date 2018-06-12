@@ -18,7 +18,7 @@ This project is based on MAVEN.
 Example: testYouAndYourInsuranceElementsPageVisibility_2018.06.05.12.30.31.png
 -> 'src/main/java/helpers' -> includes the classes used for avoid the code duplication and utilities
 
-  The 'TestBase' class contains the logic on opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
+  The 'TestBase' class contains the logic for opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
     
 -> 'src/main/java/screens' -> contains methods for each page (home + motor)
 -> 'src/test/java/' -> contains all test cases for motor AND home. A testcase corresponds to a single row defined in the 'GoCompareMotorAggregator' and 'ConfusedHomeAggregator' files.
@@ -37,7 +37,7 @@ You can update the urls from 'TestConfig' sheet, by changing the following value
 
 ~ WebApp Test Environment -> environment for the web aggragator url
 
-~ IsDevEnvironment (Y/N) -> If you want to run on dev environment set the flag Y otherwise N
+~ IsDevEnvironment (Y/N) -> If you want to run on dev environment set the flag to Y otherwise N
 
 ~ Soap Dev Environment -> the SOAP POST request endpoint (e.g.: http://e1a-eswls-devd-01.es-dte.co.uk:7012/ibisservice/ibisservice)
 
