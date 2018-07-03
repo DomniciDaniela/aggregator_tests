@@ -1,7 +1,4 @@
 .idea
 aggregatorsweb.iml
 target
-src/.DS_Store
 .idea/workspace.xml
-src/test/.DS_Store
-.DS_Store

@@ -85,10 +85,16 @@ public class YourQuote {
      * Helper method to validate if travel popup si displayed
      */
     public static boolean isTravelPopupDisplayed() throws Exception {
-        WebElement popup = driver.findElement(By.id("context-help-travelPopUp-panel"));
+        WebElement popup = driver.findElement(By.id("context-help-testPopUp-panel"));
         return Utils.isWebElementIsDisplayed(popup, 2);
     }
-
+    /**
+     * Helper method to validate if travel popup si displayed
+     */
+    public static boolean isWinterSportsPopupDisplayed() throws Exception {
+        WebElement popup = driver.findElement(By.id("context-help-possessionPopUp-panel"));
+        return Utils.isWebElementIsDisplayed(popup, 2);
+    }
 }
 
 
