@@ -36,6 +36,7 @@ public class TestDataUtils {
     public static class PageURLs {
         public static final String BREAKDOWN_OPTIONS = "breakdownOptions.xhtml";
         public static final String CARD_DETAILS = "cardInformation.xhtml";
+        public static final String DIRECT_DEBIT = "directDebitInformation.xhtml";
         public static final String MORE_DETAILS_ABOUT_YOUR_COVER = "moreDetailsAboutYourCover.xhtml";
         public static final String PAYMENT_CONFIRMATION = "paymentConfirmation.xhtml";
         public static final String PAYMENT_OPTIONS = "paymentOptions.xhtml";

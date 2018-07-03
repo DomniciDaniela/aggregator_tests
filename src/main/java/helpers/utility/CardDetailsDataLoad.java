@@ -15,6 +15,16 @@ public class CardDetailsDataLoad {
         public static String sExpiryMonth = null;
         public static String sExpiryYear = null;
         public static String sSecurityCode = null;
+
+        // Direct Debit
+        public static String sAccountHolder = null;
+        public static String sHolderName = null;
+        public static String sSortCodePart1 = null;
+        public static String sSortCodePart2 = null;
+        public static String sSortCodePart3 = null;
+        public static String sAccountNumber = null;
+        public static String sBankName = null;
+
     }
 
     public static void loadData(WebDriver driver, Integer iRecordNumber) throws Exception {
@@ -29,6 +39,15 @@ public class CardDetailsDataLoad {
         DataLoadVariables.sExpiryMonth = DataArray.get(3);
         DataLoadVariables.sExpiryYear = DataArray.get(4);
         DataLoadVariables.sSecurityCode = DataArray.get(5);
+
+        DataLoadVariables.sAccountHolder = DataArray.get(6);
+        DataLoadVariables.sHolderName = DataArray.get(7);
+        DataLoadVariables.sSortCodePart1 = DataArray.get(8);
+        DataLoadVariables.sSortCodePart2 = DataArray.get(9);
+        DataLoadVariables.sSortCodePart3 = DataArray.get(10);
+        DataLoadVariables.sAccountNumber = DataArray.get(11);
+        DataLoadVariables.sBankName = DataArray.get(12);
+
     }
 
 }

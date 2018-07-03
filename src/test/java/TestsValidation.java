@@ -1,13 +1,11 @@
 import helpers.Utils;
 import org.junit.Assert;
-import screens.CardDetails;
-import screens.PaymentConfirmation;
-import screens.PaymentOptions;
-import screens.QuoteDetails;
+import screens.*;
 import screens.motor.BreakdownsOptions;
 import screens.motor.YourQuote;
 
 import static helpers.TestBase.driver;
+import static helpers.utility.ConfigLoad.ConfigLoadVariables.WEB_APP_ENVIRONMENT;
 
 public class TestsValidation {
 
@@ -39,30 +37,35 @@ public class TestsValidation {
         String annualCost = Utils.getAnnualCost();
 
         if (selectAddon) {
-            Assert.assertTrue("'Recalculate' button is not disabled", Utils.isRecalculateButtonDisabled());
+            if (!WEB_APP_ENVIRONMENT.equalsIgnoreCase("d")) {
+                Assert.assertTrue("'Recalculate' button is not disabled", Utils.isRecalculateButtonDisabled());
+            }
 
             selectProtection(Protection.FULL_PROTECTION);
+            Thread.sleep(3000);
             Assert.assertNotEquals("FULL_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("FULL_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectProtection(Protection.JUST_IN_CASE_PROTECTION);
+            Thread.sleep(3000);
             Assert.assertNotEquals("JUST_IN_CASE_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("JUST_IN_CASE_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectProtection(Protection.MLP_PROTECTION);
+            Thread.sleep(3000);
             Assert.assertNotEquals("MLP_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("MLP_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
-        } else {
+
             selectProtection(Protection.NO_PROTECTION);
+            Thread.sleep(3000);
             Assert.assertEquals("NO_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("NO_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
-
         }
 
         Utils.clickNext();
 
         // Dismiss MLP popup
-        if (!selectAddon) {
+        if (selectAddon) {
             if (YourQuote.isMLPPopupDisplayed()) {
                 Utils.clickNoThanks();
             }
@@ -74,24 +77,29 @@ public class TestsValidation {
         String breakdownAnnualCost = Utils.getAnnualCost();
 
         if (selectAddon) {
-            Assert.assertTrue("'Recalculate' button is not disabled", Utils.isRecalculateButtonDisabled());
+            if (!WEB_APP_ENVIRONMENT.equalsIgnoreCase("d")) {
+                Assert.assertTrue("'Recalculate' button is not disabled", Utils.isRecalculateButtonDisabled());
+            }
 
             selectCover(Breakdowns.ROAD_ASSISTANCE);
+            Thread.sleep(3000);
             Assert.assertNotEquals("ROAD_ASSISTANCE - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("ROAD_ASSISTANCE - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
 
             selectCover(Breakdowns.RA_HOME_RESCUE);
+            Thread.sleep(3000);
             Assert.assertNotEquals("RA_HOME_RESCUE - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("RA_HOME_RESCUE - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
 
             selectCover(Breakdowns.FULL_COVER);
+            Thread.sleep(3000);
             Assert.assertNotEquals("FULL_COVER - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("FULL_COVER - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
-        } else {
+
             selectCover(Breakdowns.NO_COVER);
+            Thread.sleep(3000);
             Assert.assertEquals("NO_COVER - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("NO_COVER - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
-
         }
         Utils.clickNext();
 
@@ -108,30 +116,18 @@ public class TestsValidation {
         switch (protection) {
             case FULL_PROTECTION:
                 YourQuote.selectFullProtection();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
 
             case JUST_IN_CASE_PROTECTION:
                 YourQuote.selectJustInCase();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
                 break;
 
             case MLP_PROTECTION:
                 YourQuote.selectMLP();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
 
             case NO_PROTECTION:
                 YourQuote.selectNoCover();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
         }
     }
@@ -140,30 +136,18 @@ public class TestsValidation {
         switch (breakdown) {
             case ROAD_ASSISTANCE:
                 BreakdownsOptions.selectRoadsideAssisstance();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
 
             case RA_HOME_RESCUE:
                 BreakdownsOptions.selectRAAndHomeRescue();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
                 break;
 
             case FULL_COVER:
                 BreakdownsOptions.selectFullCover();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
 
             case NO_COVER:
                 BreakdownsOptions.selectNoCover();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
         }
     }
@@ -172,42 +156,28 @@ public class TestsValidation {
         switch (cover) {
             case FAMILY_COVER:
                 screens.home.YourQuote.selectFamilyProtection();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickMobRecalculateButton();
                 break;
 
             case HOME_EMERGENCY:
                 screens.home.YourQuote.selectHomeEmergency();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
                 break;
 
             case TRAVEL_INSURANCE:
                 screens.home.YourQuote.selectTravelInsurance();
                 if (screens.home.YourQuote.isTravelPopupDisplayed()) {
                     Utils.clickCloseButton();
-
                 }
-
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
                 break;
 
             case PEST_COVER:
                 screens.home.YourQuote.selectPestCover();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
                 break;
 
             case WINTER_SPORTS:
                 screens.home.YourQuote.selectWinterSportCover();
-                Assert.assertTrue("'Mob Recalculate' button is not displayed", Utils.isMobRecalculateButtonDisplayed());
-                Assert.assertTrue("'Recalculate' button is not enabled", Utils.isRecalculateButtonEnabled());
-                Utils.clickRecalculateButton();
+                if (screens.home.YourQuote.isWinterSportsPopupDisplayed()) {
+                    Utils.clickCloseButton();
+                }
                 break;
         }
     }
@@ -231,22 +201,27 @@ public class TestsValidation {
 
         if (selectAddon) {
             selectHomeCover(HomeCover.FAMILY_COVER);
+            Thread.sleep(3000);
             Assert.assertEquals("FAMILY_COVER - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("FAMILY_COVER - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectHomeCover(HomeCover.HOME_EMERGENCY);
+            Thread.sleep(3000);
             Assert.assertEquals("HOME_EMERGENCY - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("HOME_EMERGENCY - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectHomeCover(HomeCover.TRAVEL_INSURANCE);
+            Thread.sleep(3000);
             Assert.assertNotEquals("TRAVEL_INSURANCE - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("TRAVEL_INSURANCE - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectHomeCover(HomeCover.PEST_COVER);
+            Thread.sleep(3000);
             Assert.assertNotEquals("PEST_COVER - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("PEST_COVER - The annual cost is not updated", annualCost, Utils.getAnnualCost());
 
             selectHomeCover(HomeCover.WINTER_SPORTS);
+            Thread.sleep(3000);
             Assert.assertNotEquals("WINTER_SPORTS - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("WINTER_SPORTS - The annual cost is not updated", annualCost, Utils.getAnnualCost());
         }
@@ -268,9 +243,12 @@ public class TestsValidation {
         screens.home.QuoteDetails.clickTermsAndConditions();
 
         Utils.clickNext();
-        payAnnualPolicy();
+        payMonthlyPolicy();
     }
 
+    /**
+     * Helper method to pay annually
+     */
     public static void payAnnualPolicy() throws Exception {
         PaymentOptions.waitForScreen();
         PaymentOptions.clickAnnualPayment();
@@ -289,6 +267,40 @@ public class TestsValidation {
 
         CardDetails.enterCardDetails();
         CardDetails.clickBuyButton();
+
+        // Sometimes there is an error when trying to complete the payment
+        // We have been unable to complete your card payment. This can be for one of a number of reasons including your card failing the 3D Secure security checks or a lack of funds.
+        // Please check your card details, choose another card or
+        try {
+            PaymentConfirmation.waitForScreen();
+        } catch (Exception e) {
+            CardDetails.enterCardDetails();
+            CardDetails.clickBuyButton();
+            PaymentConfirmation.waitForScreen();
+        }
+    }
+
+    /**
+     * Helper method to pay monthly
+     */
+    public static void payMonthlyPolicy() throws Exception {
+        PaymentOptions.waitForScreen();
+        PaymentOptions.clickMonthlyPayment();
+        PaymentOptions.clickBillingAddressSameAsPolicyYes();
+        PaymentOptions.clickCardOwnerNo();
+
+        Utils.clickNext();
+        // Sometimes the following warning is visible and the user has to click 'Next' again
+        // WARNING. Please don't use the back or forward buttons on your browser as you may lose your quote information.
+        try {
+            DirectDebitDetails.waitForScreen();
+        } catch (Exception e) {
+            Utils.clickNext();
+            DirectDebitDetails.waitForScreen();
+        }
+
+        DirectDebitDetails.enterCardDetails();
+        Utils.clickNext();
 
         // Sometimes there is an error when trying to complete the payment
         // We have been unable to complete your card payment. This can be for one of a number of reasons including your card failing the 3D Secure security checks or a lack of funds.

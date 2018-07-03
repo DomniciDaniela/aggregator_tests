@@ -24,9 +24,9 @@ public class AggregatorsHomeTest extends TestBase {
             }
         } else {
             if (ConfigLoad.ConfigLoadVariables.IS_DEV.equalsIgnoreCase(TestDataUtils.Flags.YES)) {
-                Utils.navigatoTo(TestDataUtils.Aggregators.SW);
-            } else {
                 Utils.navigatoTo(TestDataUtils.Aggregators.SW_DEV);
+            } else {
+                Utils.navigatoTo(TestDataUtils.Aggregators.SW);
             }
         }
 
@@ -41,7 +41,7 @@ public class AggregatorsHomeTest extends TestBase {
         Aggregators.setPostCode(HomeAggregatorDataLoad.DataLoadVariables.postCodeOut + HomeAggregatorDataLoad.DataLoadVariables.postCodeIn);
         Aggregators.clickSubmit();
 
-        TestsValidation.endToEndHomeValidation(false);
+       TestsValidation.endToEndHomeValidation(false);
     }
 
     @Test
@@ -58,9 +58,9 @@ public class AggregatorsHomeTest extends TestBase {
             }
         } else {
             if (ConfigLoad.ConfigLoadVariables.IS_DEV.equalsIgnoreCase(TestDataUtils.Flags.YES)) {
-                Utils.navigatoTo(TestDataUtils.Aggregators.SW);
-            } else {
                 Utils.navigatoTo(TestDataUtils.Aggregators.SW_DEV);
+            } else {
+                Utils.navigatoTo(TestDataUtils.Aggregators.SW);
             }
         }
 
