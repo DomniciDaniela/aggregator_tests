@@ -14,13 +14,16 @@ This project is based on MAVEN.
 # Project structure:
 
 -> 'drivers' -> all drivers/browsers required for local run. Example: Firefox, Chrome, InternetExplorer.
+
 -> 'Screenshots' -> the location of screenshots when the test is failed. The screenshot name is a concatenation between the method name and the date when the test failed.
 Example: testYouAndYourInsuranceElementsPageVisibility_2018.06.05.12.30.31.png
+
 -> 'src/main/java/helpers' -> includes the classes used for avoid the code duplication and utilities
 
   The 'TestBase' class contains the logic for opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
     
 -> 'src/main/java/screens' -> contains methods for each page (home + motor)
+
 -> 'src/test/java/' -> contains all test cases for motor AND home. A testcase corresponds to a single row defined in the 'GoCompareMotorAggregator' and 'ConfusedHomeAggregator' files.
 
 -> 'AggregatorsData.xlsx' is a spreadsheet which contains the test parameters, as follows:
