@@ -88,8 +88,6 @@ public class TestBase {
             try {
                 ConfigLoad.loadConfig(driver, 2);
                 CardDetailsDataLoad.loadData(driver, 2);
-                HomeAggregatorDataLoad.loadData(driver, 2);
-                MotorAggregatorDataLoad.loadData(driver, 2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
