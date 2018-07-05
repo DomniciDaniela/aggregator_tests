@@ -13,7 +13,7 @@ public class ExtractQuotes {
      *
      * @return QuoteID
      */
-    public static String getHomeQuote() throws Exception {
+    public static String getHomeQuoteID() throws Exception {
         String quoteReference;
         if (ConfigLoad.ConfigLoadVariables.IS_DEV.equalsIgnoreCase(TestDataUtils.Flags.YES)) {
             quoteReference = given()
@@ -303,7 +303,7 @@ public class ExtractQuotes {
      *
      * @return QuoteID
      */
-    public static String getMotorQuote() throws Exception {
+    public static String getMotorQuoteID() throws Exception {
         String quoteReference;
         if (ConfigLoad.ConfigLoadVariables.IS_DEV.equalsIgnoreCase(TestDataUtils.Flags.YES)) {
             quoteReference = given()
