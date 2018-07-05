@@ -20,22 +20,23 @@ Example: testYouAndYourInsuranceElementsPageVisibility_2018.06.05.12.30.31.png
 
 -> 'src/main/java/helpers' -> includes the classes used for avoid the code duplication and utilities
 
-  The 'TestBase' class contains the logic for opening the browser based on the parameter provided by 'AggregatorsData.xlsx' file
+  The 'TestBase' class contains the logic for opening the browser based on the parameter provided in 'AggregatorsData.xlsx' file
     
 -> 'src/main/java/screens' -> contains methods for each page (home + motor)
 
--> 'src/test/java/' -> contains all test cases for motor AND home. A testcase corresponds to a single row defined in the 'GoCompareMotorAggregator' and 'ConfusedHomeAggregator' files.
+-> 'src/test/java/' -> contains all test cases for motor AND home. A testcase corresponds to a single row defined in the 'GoCompareMotorAggregator' and 'ConfusedHomeAggregator' sheets.
 
 -> 'AggregatorsData.xlsx' is a spreadsheet which contains the test parameters, as follows:
-        - TestConfig sheet contains the configuration for the environment and browsers;
-        - GoCompareMotorAggregator sheet contains the parameters/data for the motor SOAP request(The template used is GoCompare)
-        - ConfusedHomeAggregator sheet contains the parameters/data for the home SOAP request(The template used is Confused)
-        - CardDetails sheet contains the data for the payment (card type, card number, card owner, expiry date, cvc)
+        - TestConfig -> contains the configuration for the environment and browsers;
+        - GoCompareMotorAggregator -> contains the parameters/data for the motor SOAP request(The template used is GoCompare)
+        - ConfusedHomeAggregator -> contains the parameters/data for the home SOAP request(The template used is Confused)
+        - CardDetails -> contains the data for the payment (card type, card number, card owner, expiry date, cvc)
 
 -> 'pom.xml' -> contains all framework dependencies.
 
 # How to run these tests on other test environments/endpoints than provided in test cases?
 You can update the urls from 'TestConfig' sheet, by changing the following values :
+
 ~ Soap Test Environment -> the SOAP POST request endpoint (e.g.: http://e1b-eswls-tstd-01.es-dte.co.uk:7012/ibisservice/ibisservice)
 
 ~ WebApp Test Environment -> environment for the web aggragator url
