@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.LocalDateTime;
+
 import static helpers.TestBase.driver;
 
 public class Utils {
@@ -159,30 +161,6 @@ public class Utils {
     }
 
     /**
-     * Helper method to verify if 'Mob Recalculate' button is displayed
-     *
-     * @return true/false
-     */
-    public static boolean isMobRecalculateButtonDisplayed() throws Exception {
-        try {
-            WebElement recalculate = driver.findElement(By.id("mobRecalculate"));
-            return isWebElementIsDisplayed(recalculate, 1);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * Helper method to verify if 'Recalculate' button is enabled
-     *
-     * @return true/false
-     */
-    public static boolean isRecalculateButtonEnabled() throws Exception {
-        WebElement recalculate = driver.findElement(By.id("recalculate"));
-        return recalculate.isEnabled();
-    }
-
-    /**
      * Helper method to verify if 'Recalculate' button is disabled
      *
      * @return true/false
@@ -190,22 +168,6 @@ public class Utils {
     public static boolean isRecalculateButtonDisabled() throws Exception {
         WebElement recalculate = driver.findElement(By.id("recalculateDisabled"));
         return recalculate.isDisplayed();
-    }
-
-    /**
-     * Helper method to click 'Mob Recalculate' button
-     */
-    public static void clickMobRecalculateButton() throws Exception {
-        WebElement recalculate = driver.findElement(By.id("mobRecalculate"));
-        clickWebElementAfterWait(recalculate, 2);
-    }
-
-    /**
-     * Helper method to click 'Recalculate' button
-     */
-    public static void clickRecalculateButton() throws Exception {
-        WebElement recalculate = driver.findElement(By.id("recalculate"));
-        clickWebElementAfterWait(recalculate, 4);
     }
 
     /**
@@ -227,9 +189,12 @@ public class Utils {
      * Format: 2018-06-04
      */
     public static String getLocalDate() throws Exception{
-       String localDate = java.time.LocalDate.now().toString();
+        LocalDateTime localDate = LocalDateTime.now();
 
-       System.out.println("Local date is:  " + localDate);
-       return localDate;
+        String date = localDate.toString();
+
+        System.out.println("Local date is:  " + date);
+
+        return date;
     }
 }

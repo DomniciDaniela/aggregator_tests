@@ -143,7 +143,7 @@ public class MotorAggregatorDataLoad {
         MotorAggregatorDataLoad.DataLoadVariables.houseNumber = DataArray.get(56);
         MotorAggregatorDataLoad.DataLoadVariables.streetName = DataArray.get(57);
         MotorAggregatorDataLoad.DataLoadVariables.town = DataArray.get(58);
-        MotorAggregatorDataLoad.DataLoadVariables.county = DataArray.get(58);
+        MotorAggregatorDataLoad.DataLoadVariables.county = DataArray.get(59);
     }
 
 }

@@ -9,42 +9,42 @@ import screens.*;
 public class AggregatorsMotorTest extends TestBase {
 
     @Test
-    public void testMotorGoCompareAddonSelected_Esure() throws Exception {
+    public void testMotorAggregatorAddonSelected_Esure() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 2);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(true);
     }
 
     @Test
-    public void testMotorGoCompareAddonSelected_FA() throws Exception {
+    public void testMotorAggregatorAddonSelected_FA() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 4);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(true);
     }
 
     @Test
-    public void testMotorGoCompareAddonSelected_SW() throws Exception {
+    public void testMotorAggregatorAddonSelected_SW() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 3);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(true);
     }
 
     @Test
-    public void testMotorGoCompareAddonNotSelected_Esure() throws Exception {
+    public void testMotorAggregatorAddonNotSelected_Esure() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 2);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(false);
     }
 
     @Test
-    public void testMotorGoCompareAddonNotSelected_FA() throws Exception {
+    public void testMotorAggregatorAddonNotSelected_FA() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 4);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(false);
     }
 
     @Test
-    public void testMotorGoCompareAddonNotSelected_SW() throws Exception {
+    public void testMotorAggregatorAddonNotSelected_SW() throws Exception {
         MotorAggregatorDataLoad.loadData(driver, 3);
         reachQuotePage();
         TestsValidation.endToEndMotorValidation(false);

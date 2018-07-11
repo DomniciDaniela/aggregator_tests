@@ -11,7 +11,7 @@ import static helpers.utility.ConfigLoad.ConfigLoadVariables.BROWSER;
 public class AggregatorsHomeTest extends TestBase {
 
     @Test
-    public void testHomeConfusedAddonNotSelected_Esure() throws Exception {
+    public void testHomeAggregatorAddonNotSelected_Esure() throws Exception {
         HomeAggregatorDataLoad.loadData(driver, 2);
 
         reachQuotePage();
@@ -19,7 +19,7 @@ public class AggregatorsHomeTest extends TestBase {
     }
 
     @Test
-    public void testHomeConfusedAddonNotSelected_SW() throws Exception {
+    public void testHomeAggregatorAddonNotSelected_SW() throws Exception {
         HomeAggregatorDataLoad.loadData(driver, 2);
 
         reachQuotePage();
@@ -27,7 +27,7 @@ public class AggregatorsHomeTest extends TestBase {
     }
 
     @Test
-    public void testHomeConfusedSelectAddon_Esure() throws Exception {
+    public void testHomeAggregatorAddonSelected_Esure() throws Exception {
         HomeAggregatorDataLoad.loadData(driver, 2);
 
         reachQuotePage();
@@ -35,7 +35,7 @@ public class AggregatorsHomeTest extends TestBase {
     }
 
     @Test
-    public void testHomeConfusedSelectAddon_SW() throws Exception {
+    public void testHomeAggregatorAddonSelected_SW() throws Exception {
         HomeAggregatorDataLoad.loadData(driver, 3);
 
         reachQuotePage();

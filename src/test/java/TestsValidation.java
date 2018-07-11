@@ -55,17 +55,18 @@ public class TestsValidation {
             Thread.sleep(3000);
             Assert.assertNotEquals("MLP_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("MLP_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
-
+        } else {
             selectProtection(Protection.NO_PROTECTION);
             Thread.sleep(3000);
             Assert.assertEquals("NO_PROTECTION - The monthly cost is not updated", monthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("NO_PROTECTION - The annual cost is not updated", annualCost, Utils.getAnnualCost());
+
         }
 
         Utils.clickNext();
 
         // Dismiss MLP popup
-        if (selectAddon) {
+        if (!selectAddon) {
             if (YourQuote.isMLPPopupDisplayed()) {
                 Utils.clickNoThanks();
             }
@@ -96,10 +97,12 @@ public class TestsValidation {
             Assert.assertNotEquals("FULL_COVER - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertNotEquals("FULL_COVER - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
 
+         } else {
             selectCover(Breakdowns.NO_COVER);
             Thread.sleep(3000);
             Assert.assertEquals("NO_COVER - The monthly cost is not updated", breakdownMonthlyCost, Utils.getMonthlyCost());
             Assert.assertEquals("NO_COVER - The annual cost is not updated", breakdownAnnualCost, Utils.getAnnualCost());
+
         }
         Utils.clickNext();
 

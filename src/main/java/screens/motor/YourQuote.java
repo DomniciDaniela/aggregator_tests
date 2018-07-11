@@ -15,7 +15,7 @@ public class YourQuote {
      * Helper method to wait for page to load
      */
     public static void waitForScreen() throws Exception {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
+        WebDriverWait wait = new WebDriverWait(driver, 40);
         wait.until(ExpectedConditions.urlContains(TestDataUtils.PageURLs.YOUR_QUOTE));
     }
 

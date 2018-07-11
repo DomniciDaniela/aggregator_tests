@@ -4,6 +4,11 @@ import helpers.utility.ConfigLoad;
 import helpers.utility.HomeAggregatorDataLoad;
 import helpers.utility.MotorAggregatorDataLoad;
 
+import javax.xml.namespace.QName;
+import javax.xml.soap.*;
+
+import java.io.ByteArrayOutputStream;
+
 import static com.jayway.restassured.RestAssured.given;
 
 public class ExtractQuotes {
@@ -19,131 +24,7 @@ public class ExtractQuotes {
             quoteReference = given()
                     .header("Authorization", TestDataUtils.AuthorizationCredentials.BASIC_AUTHORIZATION)
                     .contentType("text/xml")
-                    .body("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
-                            "   <SOAP-ENV:Body>\n" +
-                            "      <getAggHomeQuote SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns=\"http://www.esure.com/SOA/ibisservice\">\n" +
-                            "         <homeRequest xmlns=\"java:com.esure.busservices.cdm.aggregator.request\">\n" +
-                            "            <aggId>" + HomeAggregatorDataLoad.DataLoadVariables.aggId + "</aggId>\n" +
-                            "            <brands SOAP-ENC:arrayType=\"Brand[1]\">\n" +
-                            "               <Brand>\n" +
-                            "                  <brand>" + HomeAggregatorDataLoad.DataLoadVariables.brand + "</brand>\n" +
-                            "               </Brand>\n" +
-                            "            </brands>\n" +
-                            "            <assumptions>\n" +
-                            "               <specialTermsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.specifiedItemsFlag + "</specialTermsFlag>\n" +
-                            "               <convictionPendFlag>" + HomeAggregatorDataLoad.DataLoadVariables.convictionPendFlag + "</convictionPendFlag>\n" +
-                            "               <repairStateFlag>" + HomeAggregatorDataLoad.DataLoadVariables.repairStateFlag + "</repairStateFlag>\n" +
-                            "               <holidayHomeFlag>" + HomeAggregatorDataLoad.DataLoadVariables.holidayHomeFlag + "</holidayHomeFlag>\n" +
-                            "               <unoccupiedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.unoccupiedFlag + "</unoccupiedFlag>\n" +
-                            "               <floodFlag>" + HomeAggregatorDataLoad.DataLoadVariables.floodFlag + "</floodFlag>\n" +
-                            "               <subsidenceFlag>" + HomeAggregatorDataLoad.DataLoadVariables.subsidenceFlag + "</subsidenceFlag>\n" +
-                            "               <listedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.listedFlag + "</listedFlag>\n" +
-                            "               <businessFlag>" + HomeAggregatorDataLoad.DataLoadVariables.businessFlag + "</businessFlag>\n" +
-                            "               <treeDamageFlag>" + HomeAggregatorDataLoad.DataLoadVariables.treeDamageFlag + "</treeDamageFlag>\n" +
-                            "               <tallTreeNearbyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.tallTreeNearbyFlag + "</tallTreeNearbyFlag>\n" +
-                            "               <buildingInProgressFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildingInProgressFlag + "</buildingInProgressFlag>\n" +
-                            "               <prevInsBldCd>" + HomeAggregatorDataLoad.DataLoadVariables.prevInsBldCd + "</prevInsBldCd>\n" +
-                            "               <rebuildingValue>" + HomeAggregatorDataLoad.DataLoadVariables.rebuildingValue + "</rebuildingValue>\n" +
-                            "               <yearsBldInsWithoutClaim>" + HomeAggregatorDataLoad.DataLoadVariables.yearsBldInsWithoutClaim + "</yearsBldInsWithoutClaim>\n" +
-                            "               <propertyValue>" + HomeAggregatorDataLoad.DataLoadVariables.propertyValue + "</propertyValue>\n" +
-                            "               <prevInsConCd>" + HomeAggregatorDataLoad.DataLoadVariables.prevInsConCd + "</prevInsConCd>\n" +
-                            "               <forSaleFlag>" + HomeAggregatorDataLoad.DataLoadVariables.forSaleFlag + "</forSaleFlag>\n" +
-                            "               <bankruptFlag>" + HomeAggregatorDataLoad.DataLoadVariables.bankruptFlag + "</bankruptFlag>\n" +
-                            "               <smokersFlag>" + HomeAggregatorDataLoad.DataLoadVariables.smokersFlag + "</smokersFlag>\n" +
-                            "               <nWatchAreaFlag>" + HomeAggregatorDataLoad.DataLoadVariables.nWatchAreaFlag + "</nWatchAreaFlag>\n" +
-                            "               <nWatchMemberFlag>" + HomeAggregatorDataLoad.DataLoadVariables.nWatchMemberFlag + "</nWatchMemberFlag>\n" +
-                            "               <burglarAlarmCd>" + HomeAggregatorDataLoad.DataLoadVariables.burglarAlarmCd + "</burglarAlarmCd>\n" +
-                            "               <alarmProfessionalFlag>" + HomeAggregatorDataLoad.DataLoadVariables.alarmProfessionalFlag + "</alarmProfessionalFlag>\n" +
-                            "               <alarmPoliceFlag>" + HomeAggregatorDataLoad.DataLoadVariables.alarmPoliceFlag + "</alarmPoliceFlag>\n" +
-                            "               <jointPropBankruptFlag>" + HomeAggregatorDataLoad.DataLoadVariables.jointPropBankruptFlag + "</jointPropBankruptFlag>\n" +
-                            "               <occupiedByFamilyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.occupiedByFamilyFlag + "</occupiedByFamilyFlag>\n" +
-                            "               <selfContainedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.selfContainedFlag + "</selfContainedFlag>\n" +
-                            "            </assumptions>\n" +
-                            "            <buildings>\n" +
-                            "               <coverLevel>" + HomeAggregatorDataLoad.DataLoadVariables.coverLevel + "</coverLevel>\n" +
-                            "               <ncdProtect>" + HomeAggregatorDataLoad.DataLoadVariables.ncdProtect + "</ncdProtect>\n" +
-                            "               <ncdYrs>" + HomeAggregatorDataLoad.DataLoadVariables.ncdYrs + "</ncdYrs>\n" +
-                            "               <sumIns>" + HomeAggregatorDataLoad.DataLoadVariables.sumIns + "</sumIns>\n" +
-                            "               <volXs>250</volXs>\n" +
-                            "               <claims SOAP-ENC:arrayType=\"HomeClaim[0]\" xsi:nil=\"true\"/>\n" +
-                            "            </buildings>\n" +
-                            "            <policy>\n" +
-                            "               <startDate>" + Utils.getLocalDate() + "T00:00:00</startDate>\n" +
-                            "               <insuranceDeclined>" + HomeAggregatorDataLoad.DataLoadVariables.insuranceDeclined + "</insuranceDeclined>\n" +
-                            "               <currentInsurer>" + HomeAggregatorDataLoad.DataLoadVariables.currentInsurer + "</currentInsurer>\n" +
-                            "               <yearsCurrentInsurer>" + HomeAggregatorDataLoad.DataLoadVariables.yearsCurrentInsurer + "</yearsCurrentInsurer>\n" +
-                            "            </policy>\n" +
-                            "            <property>\n" +
-                            "               <address>\n" +
-                            "                  <houseNumber>" + HomeAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                  <streetName>" + HomeAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                  <town>" + HomeAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                  <county>" + HomeAggregatorDataLoad.DataLoadVariables.county + " </county>\n" +
-                            "                  <postcode>\n" +
-                            "                     <postCodeOut>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                     <postCodeIn>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                  </postcode>\n" +
-                            "               </address>\n" +
-                            "               <firstTimeBuyer>" + HomeAggregatorDataLoad.DataLoadVariables.firstTimeBuyer + "</firstTimeBuyer>\n" +
-                            "               <locks>" + HomeAggregatorDataLoad.DataLoadVariables.locks + "</locks>\n" +
-                            "               <nacoss>" + HomeAggregatorDataLoad.DataLoadVariables.nacoss + "</nacoss>\n" +
-                            "               <bedsCd>" + HomeAggregatorDataLoad.DataLoadVariables.bedsCd + "</bedsCd>\n" +
-                            "               <addRoomsCd>" + HomeAggregatorDataLoad.DataLoadVariables.addRoomsCd + "</addRoomsCd>\n" +
-                            "               <numAdultCd>" + HomeAggregatorDataLoad.DataLoadVariables.numAdultCd + "</numAdultCd>\n" +
-                            "               <numChildCd>" + HomeAggregatorDataLoad.DataLoadVariables.numChildCd + "</numChildCd>\n" +
-                            "               <ownCd>" + HomeAggregatorDataLoad.DataLoadVariables.ownCd + "</ownCd>\n" +
-                            "               <propCd>" + HomeAggregatorDataLoad.DataLoadVariables.propCd + "</propCd>\n" +
-                            "               <roofCd>" + HomeAggregatorDataLoad.DataLoadVariables.roofCd + "</roofCd>\n" +
-                            "               <wallCd>" + HomeAggregatorDataLoad.DataLoadVariables.wallCd + "</wallCd>\n" +
-                            "               <builtCd>" + HomeAggregatorDataLoad.DataLoadVariables.builtCd + "</builtCd>\n" +
-                            "               <currentMortgageProvider>" + HomeAggregatorDataLoad.DataLoadVariables.currentMortgageProvider + "</currentMortgageProvider>\n" +
-                            "            </property>\n" +
-                            "            <proposers SOAP-ENC:arrayType=\"HomeProposer[1]\">\n" +
-                            "               <Proposer>\n" +
-                            "                  <title>" + HomeAggregatorDataLoad.DataLoadVariables.proposerTitle + "</title>\n" +
-                            "                  <firstName>" + HomeAggregatorDataLoad.DataLoadVariables.proposerFirstName + "</firstName>\n" +
-                            "                  <lastName>" + HomeAggregatorDataLoad.DataLoadVariables.proposerLastName + "</lastName>\n" +
-                            "                  <dob>" + HomeAggregatorDataLoad.DataLoadVariables.proposerDateOfBirth + "</dob>\n" +
-                            "                  <sex>" + HomeAggregatorDataLoad.DataLoadVariables.proposerGender + "</sex>\n" +
-                            "                  <occCd>" + HomeAggregatorDataLoad.DataLoadVariables.occCd + "</occCd>\n" +
-                            "                  <occDesc>" + HomeAggregatorDataLoad.DataLoadVariables.occDesc + "</occDesc>\n" +
-                            "                  <eveningNum>" + HomeAggregatorDataLoad.DataLoadVariables.eveningNum + "</eveningNum>\n" +
-                            "                  <daytimeNum>" + HomeAggregatorDataLoad.DataLoadVariables.daytimeNum + "</daytimeNum>\n" +
-                            "                  <emailAddress>" + HomeAggregatorDataLoad.DataLoadVariables.emailAddress + "</emailAddress>\n" +
-                            "                  <maritalCd>" + HomeAggregatorDataLoad.DataLoadVariables.maritalCd + "</maritalCd>\n" +
-                            "                  <relationCd>" + HomeAggregatorDataLoad.DataLoadVariables.relationCd + "</relationCd>\n" +
-                            "                  <address>\n" +
-                            "                  <houseNumber>" + HomeAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                  <streetName>" + HomeAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                  <town>" + HomeAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                  <county>" + HomeAggregatorDataLoad.DataLoadVariables.county + "</county>\n" +
-                            "                  <postcode>\n" +
-                            "                     <postCodeOut>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                     <postCodeIn>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                  </postcode>\n" +
-                            "               </address>\n" +
-                            "                  <residency>\n" +
-                            "                     <livedUkMonth>" + HomeAggregatorDataLoad.DataLoadVariables.livedUkMonth + "</livedUkMonth>\n" +
-                            "                     <livedUkYear>" + HomeAggregatorDataLoad.DataLoadVariables.livedUkYear + "</livedUkYear>\n" +
-                            "                  </residency>\n" +
-                            "                  <isHomeOwner>" + HomeAggregatorDataLoad.DataLoadVariables.isHomeOwner + "</isHomeOwner>\n" +
-                            "                  <yearsAtRiskAddress>" + HomeAggregatorDataLoad.DataLoadVariables.yearsAtRiskAddress + "</yearsAtRiskAddress>\n" +
-                            "               </Proposer>\n" +
-                            "            </proposers>\n" +
-                            "            <requiredCovers>\n" +
-                            "               <buildVarFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildVarFlag + "</buildVarFlag>\n" +
-                            "               <buildingsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildingsFlag + "</buildingsFlag>\n" +
-                            "               <contentsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.contentsFlag + "</contentsFlag>\n" +
-                            "               <emergencyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.emergencyFlag + "</emergencyFlag>\n" +
-                            "               <flpFlag>" + HomeAggregatorDataLoad.DataLoadVariables.flpFlag + "</flpFlag>\n" +
-                            "               <persPossFlag>" + HomeAggregatorDataLoad.DataLoadVariables.persPossFlag + "</persPossFlag>\n" +
-                            "               <pestFlag>" + HomeAggregatorDataLoad.DataLoadVariables.pestFlag + "</pestFlag>\n" +
-                            "               <specifiedItemsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.specifiedItemsFlag + "</specifiedItemsFlag>\n" +
-                            "            </requiredCovers>\n" +
-                            "         </homeRequest>\n" +
-                            "      </getAggHomeQuote>\n" +
-                            "   </SOAP-ENV:Body>\n" +
-                            "</SOAP-ENV:Envelope>")
+                    .body(createHomeSoapBody())
                     .expect()
                     .statusCode(200)
                     .when().post(ConfigLoad.ConfigLoadVariables.DEV_ENVIRONMENT)
@@ -159,131 +40,7 @@ public class ExtractQuotes {
             quoteReference = given()
                     .header("Authorization", TestDataUtils.AuthorizationCredentials.BASIC_AUTHORIZATION)
                     .contentType("text/xml")
-                    .body("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
-                            "   <SOAP-ENV:Body>\n" +
-                            "      <getAggHomeQuote SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns=\"http://www.esure.com/SOA/ibisservice\">\n" +
-                            "         <homeRequest xmlns=\"java:com.esure.busservices.cdm.aggregator.request\">\n" +
-                            "            <aggId>" + HomeAggregatorDataLoad.DataLoadVariables.aggId + "</aggId>\n" +
-                            "            <brands SOAP-ENC:arrayType=\"Brand[1]\">\n" +
-                            "               <Brand>\n" +
-                            "                  <brand>" + HomeAggregatorDataLoad.DataLoadVariables.brand + "</brand>\n" +
-                            "               </Brand>\n" +
-                            "            </brands>\n" +
-                            "            <assumptions>\n" +
-                            "               <specialTermsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.specifiedItemsFlag + "</specialTermsFlag>\n" +
-                            "               <convictionPendFlag>" + HomeAggregatorDataLoad.DataLoadVariables.convictionPendFlag + "</convictionPendFlag>\n" +
-                            "               <repairStateFlag>" + HomeAggregatorDataLoad.DataLoadVariables.repairStateFlag + "</repairStateFlag>\n" +
-                            "               <holidayHomeFlag>" + HomeAggregatorDataLoad.DataLoadVariables.holidayHomeFlag + "</holidayHomeFlag>\n" +
-                            "               <unoccupiedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.unoccupiedFlag + "</unoccupiedFlag>\n" +
-                            "               <floodFlag>" + HomeAggregatorDataLoad.DataLoadVariables.floodFlag + "</floodFlag>\n" +
-                            "               <subsidenceFlag>" + HomeAggregatorDataLoad.DataLoadVariables.subsidenceFlag + "</subsidenceFlag>\n" +
-                            "               <listedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.listedFlag + "</listedFlag>\n" +
-                            "               <businessFlag>" + HomeAggregatorDataLoad.DataLoadVariables.businessFlag + "</businessFlag>\n" +
-                            "               <treeDamageFlag>" + HomeAggregatorDataLoad.DataLoadVariables.treeDamageFlag + "</treeDamageFlag>\n" +
-                            "               <tallTreeNearbyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.tallTreeNearbyFlag + "</tallTreeNearbyFlag>\n" +
-                            "               <buildingInProgressFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildingInProgressFlag + "</buildingInProgressFlag>\n" +
-                            "               <prevInsBldCd>" + HomeAggregatorDataLoad.DataLoadVariables.prevInsBldCd + "</prevInsBldCd>\n" +
-                            "               <rebuildingValue>" + HomeAggregatorDataLoad.DataLoadVariables.rebuildingValue + "</rebuildingValue>\n" +
-                            "               <yearsBldInsWithoutClaim>" + HomeAggregatorDataLoad.DataLoadVariables.yearsBldInsWithoutClaim + "</yearsBldInsWithoutClaim>\n" +
-                            "               <propertyValue>" + HomeAggregatorDataLoad.DataLoadVariables.propertyValue + "</propertyValue>\n" +
-                            "               <prevInsConCd>" + HomeAggregatorDataLoad.DataLoadVariables.prevInsConCd + "</prevInsConCd>\n" +
-                            "               <forSaleFlag>" + HomeAggregatorDataLoad.DataLoadVariables.forSaleFlag + "</forSaleFlag>\n" +
-                            "               <bankruptFlag>" + HomeAggregatorDataLoad.DataLoadVariables.bankruptFlag + "</bankruptFlag>\n" +
-                            "               <smokersFlag>" + HomeAggregatorDataLoad.DataLoadVariables.smokersFlag + "</smokersFlag>\n" +
-                            "               <nWatchAreaFlag>" + HomeAggregatorDataLoad.DataLoadVariables.nWatchAreaFlag + "</nWatchAreaFlag>\n" +
-                            "               <nWatchMemberFlag>" + HomeAggregatorDataLoad.DataLoadVariables.nWatchMemberFlag + "</nWatchMemberFlag>\n" +
-                            "               <burglarAlarmCd>" + HomeAggregatorDataLoad.DataLoadVariables.burglarAlarmCd + "</burglarAlarmCd>\n" +
-                            "               <alarmProfessionalFlag>" + HomeAggregatorDataLoad.DataLoadVariables.alarmProfessionalFlag + "</alarmProfessionalFlag>\n" +
-                            "               <alarmPoliceFlag>" + HomeAggregatorDataLoad.DataLoadVariables.alarmPoliceFlag + "</alarmPoliceFlag>\n" +
-                            "               <jointPropBankruptFlag>" + HomeAggregatorDataLoad.DataLoadVariables.jointPropBankruptFlag + "</jointPropBankruptFlag>\n" +
-                            "               <occupiedByFamilyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.occupiedByFamilyFlag + "</occupiedByFamilyFlag>\n" +
-                            "               <selfContainedFlag>" + HomeAggregatorDataLoad.DataLoadVariables.selfContainedFlag + "</selfContainedFlag>\n" +
-                            "            </assumptions>\n" +
-                            "            <buildings>\n" +
-                            "               <coverLevel>" + HomeAggregatorDataLoad.DataLoadVariables.coverLevel + "</coverLevel>\n" +
-                            "               <ncdProtect>" + HomeAggregatorDataLoad.DataLoadVariables.ncdProtect + "</ncdProtect>\n" +
-                            "               <ncdYrs>" + HomeAggregatorDataLoad.DataLoadVariables.ncdYrs + "</ncdYrs>\n" +
-                            "               <sumIns>" + HomeAggregatorDataLoad.DataLoadVariables.sumIns + "</sumIns>\n" +
-                            "               <volXs>250</volXs>\n" +
-                            "               <claims SOAP-ENC:arrayType=\"HomeClaim[0]\" xsi:nil=\"true\"/>\n" +
-                            "            </buildings>\n" +
-                            "            <policy>\n" +
-                            "               <startDate>" + Utils.getLocalDate() + "T00:00:00</startDate>\n" +
-                            "               <insuranceDeclined>" + HomeAggregatorDataLoad.DataLoadVariables.insuranceDeclined + "</insuranceDeclined>\n" +
-                            "               <currentInsurer>" + HomeAggregatorDataLoad.DataLoadVariables.currentInsurer + "</currentInsurer>\n" +
-                            "               <yearsCurrentInsurer>" + HomeAggregatorDataLoad.DataLoadVariables.yearsCurrentInsurer + "</yearsCurrentInsurer>\n" +
-                            "            </policy>\n" +
-                            "            <property>\n" +
-                            "               <address>\n" +
-                            "                  <houseNumber>" + HomeAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                  <streetName>" + HomeAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                  <town>" + HomeAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                  <county>" + HomeAggregatorDataLoad.DataLoadVariables.county + " </county>\n" +
-                            "                  <postcode>\n" +
-                            "                     <postCodeOut>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                     <postCodeIn>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                  </postcode>\n" +
-                            "               </address>\n" +
-                            "               <firstTimeBuyer>" + HomeAggregatorDataLoad.DataLoadVariables.firstTimeBuyer + "</firstTimeBuyer>\n" +
-                            "               <locks>" + HomeAggregatorDataLoad.DataLoadVariables.locks + "</locks>\n" +
-                            "               <nacoss>" + HomeAggregatorDataLoad.DataLoadVariables.nacoss + "</nacoss>\n" +
-                            "               <bedsCd>" + HomeAggregatorDataLoad.DataLoadVariables.bedsCd + "</bedsCd>\n" +
-                            "               <addRoomsCd>" + HomeAggregatorDataLoad.DataLoadVariables.addRoomsCd + "</addRoomsCd>\n" +
-                            "               <numAdultCd>" + HomeAggregatorDataLoad.DataLoadVariables.numAdultCd + "</numAdultCd>\n" +
-                            "               <numChildCd>" + HomeAggregatorDataLoad.DataLoadVariables.numChildCd + "</numChildCd>\n" +
-                            "               <ownCd>" + HomeAggregatorDataLoad.DataLoadVariables.ownCd + "</ownCd>\n" +
-                            "               <propCd>" + HomeAggregatorDataLoad.DataLoadVariables.propCd + "</propCd>\n" +
-                            "               <roofCd>" + HomeAggregatorDataLoad.DataLoadVariables.roofCd + "</roofCd>\n" +
-                            "               <wallCd>" + HomeAggregatorDataLoad.DataLoadVariables.wallCd + "</wallCd>\n" +
-                            "               <builtCd>" + HomeAggregatorDataLoad.DataLoadVariables.builtCd + "</builtCd>\n" +
-                            "               <currentMortgageProvider>" + HomeAggregatorDataLoad.DataLoadVariables.currentMortgageProvider + "</currentMortgageProvider>\n" +
-                            "            </property>\n" +
-                            "            <proposers SOAP-ENC:arrayType=\"HomeProposer[1]\">\n" +
-                            "               <Proposer>\n" +
-                            "                  <title>" + HomeAggregatorDataLoad.DataLoadVariables.proposerTitle + "</title>\n" +
-                            "                  <firstName>" + HomeAggregatorDataLoad.DataLoadVariables.proposerFirstName + "</firstName>\n" +
-                            "                  <lastName>" + HomeAggregatorDataLoad.DataLoadVariables.proposerLastName + "</lastName>\n" +
-                            "                  <dob>" + HomeAggregatorDataLoad.DataLoadVariables.proposerDateOfBirth + "</dob>\n" +
-                            "                  <sex>" + HomeAggregatorDataLoad.DataLoadVariables.proposerGender + "</sex>\n" +
-                            "                  <occCd>" + HomeAggregatorDataLoad.DataLoadVariables.occCd + "</occCd>\n" +
-                            "                  <occDesc>" + HomeAggregatorDataLoad.DataLoadVariables.occDesc + "</occDesc>\n" +
-                            "                  <eveningNum>" + HomeAggregatorDataLoad.DataLoadVariables.eveningNum + "</eveningNum>\n" +
-                            "                  <daytimeNum>" + HomeAggregatorDataLoad.DataLoadVariables.daytimeNum + "</daytimeNum>\n" +
-                            "                  <emailAddress>" + HomeAggregatorDataLoad.DataLoadVariables.emailAddress + "</emailAddress>\n" +
-                            "                  <maritalCd>" + HomeAggregatorDataLoad.DataLoadVariables.maritalCd + "</maritalCd>\n" +
-                            "                  <relationCd>" + HomeAggregatorDataLoad.DataLoadVariables.relationCd + "</relationCd>\n" +
-                            "                  <address>\n" +
-                            "                  <houseNumber>" + HomeAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                  <streetName>" + HomeAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                  <town>" + HomeAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                  <county>" + HomeAggregatorDataLoad.DataLoadVariables.county + "</county>\n" +
-                            "                  <postcode>\n" +
-                            "                     <postCodeOut>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                     <postCodeIn>" + HomeAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                  </postcode>\n" +
-                            "               </address>\n" +
-                            "                  <residency>\n" +
-                            "                     <livedUkMonth>" + HomeAggregatorDataLoad.DataLoadVariables.livedUkMonth + "</livedUkMonth>\n" +
-                            "                     <livedUkYear>" + HomeAggregatorDataLoad.DataLoadVariables.livedUkYear + "</livedUkYear>\n" +
-                            "                  </residency>\n" +
-                            "                  <isHomeOwner>" + HomeAggregatorDataLoad.DataLoadVariables.isHomeOwner + "</isHomeOwner>\n" +
-                            "                  <yearsAtRiskAddress>" + HomeAggregatorDataLoad.DataLoadVariables.yearsAtRiskAddress + "</yearsAtRiskAddress>\n" +
-                            "               </Proposer>\n" +
-                            "            </proposers>\n" +
-                            "            <requiredCovers>\n" +
-                            "               <buildVarFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildVarFlag + "</buildVarFlag>\n" +
-                            "               <buildingsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.buildingsFlag + "</buildingsFlag>\n" +
-                            "               <contentsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.contentsFlag + "</contentsFlag>\n" +
-                            "               <emergencyFlag>" + HomeAggregatorDataLoad.DataLoadVariables.emergencyFlag + "</emergencyFlag>\n" +
-                            "               <flpFlag>" + HomeAggregatorDataLoad.DataLoadVariables.flpFlag + "</flpFlag>\n" +
-                            "               <persPossFlag>" + HomeAggregatorDataLoad.DataLoadVariables.persPossFlag + "</persPossFlag>\n" +
-                            "               <pestFlag>" + HomeAggregatorDataLoad.DataLoadVariables.pestFlag + "</pestFlag>\n" +
-                            "               <specifiedItemsFlag>" + HomeAggregatorDataLoad.DataLoadVariables.specifiedItemsFlag + "</specifiedItemsFlag>\n" +
-                            "            </requiredCovers>\n" +
-                            "         </homeRequest>\n" +
-                            "      </getAggHomeQuote>\n" +
-                            "   </SOAP-ENV:Body>\n" +
-                            "</SOAP-ENV:Envelope>")
+                    .body(createHomeSoapBody())
                     .expect()
                     .statusCode(200)
                     .when().post(ConfigLoad.ConfigLoadVariables.TEST_ENVIRONMENT)
@@ -309,101 +66,7 @@ public class ExtractQuotes {
             quoteReference = given()
                     .header("Authorization", TestDataUtils.AuthorizationCredentials.BASIC_AUTHORIZATION)
                     .contentType("text/xml")
-                    .body("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
-                            "   <SOAP-ENV:Body>\n" +
-                            "      <getAggMotorQuote SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns=\"http://www.esure.com/SOA/ibisservice\">\n" +
-                            "         <motorRequest xmlns=\"java:com.esure.busservices.cdm.aggregator.request\">\n" +
-                            "            <aggId>" + MotorAggregatorDataLoad.DataLoadVariables.aggId + "</aggId>\n" +
-                            "            <brands SOAP-ENC:arrayType=\"Brand[1]\">\n" +
-                            "               <brand>\n" +
-                            "                  <brand>" + MotorAggregatorDataLoad.DataLoadVariables.brand + "</brand>\n" +
-                            "               </brand>\n" +
-                            "            </brands>\n" +
-                            "            <policy>\n" + MotorAggregatorDataLoad.DataLoadVariables.policy +
-                            "               <startDate>" + Utils.getLocalDate() + "T00:00:00</startDate>\n" +
-                            "               <currentInsurer>" + MotorAggregatorDataLoad.DataLoadVariables.currentInsurer + "</currentInsurer>\n" +
-                            "               <insuranceDeclined>" + MotorAggregatorDataLoad.DataLoadVariables.insuranceDeclined + "</insuranceDeclined>\n" +
-                            "               <prefPayMethCd>" + MotorAggregatorDataLoad.DataLoadVariables.prefPayMethCd + "</prefPayMethCd>\n" +
-                            "            </policy>\n" +
-                            "            <motorCov>\n" +
-                            "               <covTypCd>" + MotorAggregatorDataLoad.DataLoadVariables.covTypCd + "</covTypCd>\n" +
-                            "               <volXSCd>" + MotorAggregatorDataLoad.DataLoadVariables.volXSCd + "</volXSCd>\n" +
-                            "               <ncdProtect>" + MotorAggregatorDataLoad.DataLoadVariables.ncdProtect + "</ncdProtect>\n" +
-                            "               <numChildCd>" + MotorAggregatorDataLoad.DataLoadVariables.numChildCd + "</numChildCd>\n" +
-                            "               <useOfOtherVehicleCd>" + MotorAggregatorDataLoad.DataLoadVariables.useOfOtherVehicleCd + "</useOfOtherVehicleCd>\n" +
-                            "               <drvRestrictCd>" + MotorAggregatorDataLoad.DataLoadVariables.drvRestrictCd + "</drvRestrictCd>\n" +
-                            "               <vehicleNums>" + MotorAggregatorDataLoad.DataLoadVariables.vehicleNums + "</vehicleNums>\n" +
-                            "            </motorCov>\n" +
-                            "            <vehicle>\n" +
-                            "               <abiCd>" + MotorAggregatorDataLoad.DataLoadVariables.abiCd + "</abiCd>\n" +
-                            "               <annMileCd>" + MotorAggregatorDataLoad.DataLoadVariables.annMileCd + "</annMileCd>\n" +
-                            "               <annBusMiles>" + MotorAggregatorDataLoad.DataLoadVariables.annBusMiles + "</annBusMiles>\n" +
-                            "               <daySituCd>" + MotorAggregatorDataLoad.DataLoadVariables.daySituCd + "</daySituCd>\n" +
-                            "               <nightSituCd>" + MotorAggregatorDataLoad.DataLoadVariables.nightSituCd + "</nightSituCd>\n" +
-                            "               <isEstValRaw>" + MotorAggregatorDataLoad.DataLoadVariables.isEstValRaw + "</isEstValRaw>\n" +
-                            "               <notPurchasedYet>" + MotorAggregatorDataLoad.DataLoadVariables.notPurchasedYet + "</notPurchasedYet>\n" +
-                            "               <purchaseDate>" + MotorAggregatorDataLoad.DataLoadVariables.purchaseDate + "</purchaseDate>\n" +
-                            "               <estVal>" + MotorAggregatorDataLoad.DataLoadVariables.estVal + "</estVal>\n" +
-                            "               <regDate>" + MotorAggregatorDataLoad.DataLoadVariables.regDate + "</regDate>\n" +
-                            "               <vrm>" + MotorAggregatorDataLoad.DataLoadVariables.vrm + "</vrm>\n" +
-                            "               <riskPostcode>\n" +
-                            "                  <postCodeOut>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                  <postCodeIn>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "               </riskPostcode>\n" +
-                            "               <usage>" + MotorAggregatorDataLoad.DataLoadVariables.usage + "</usage>\n" +
-                            "               <secDevice>" + MotorAggregatorDataLoad.DataLoadVariables.secDevice + "</secDevice>\n" +
-                            "               <trackDevice>" + MotorAggregatorDataLoad.DataLoadVariables.trackDevice + "</trackDevice>\n" +
-                            "               <isImport>" + MotorAggregatorDataLoad.DataLoadVariables.isImport + "</isImport>\n" +
-                            "               <regKeeperCd>" + MotorAggregatorDataLoad.DataLoadVariables.regKeeperCd + "</regKeeperCd>\n" +
-                            "               <legalOwnerCd>" + MotorAggregatorDataLoad.DataLoadVariables.legalOwnerCd + "</legalOwnerCd>\n" +
-                            "            </vehicle>\n" +
-                            "            <drivers SOAP-ENC:arrayType=\"Driver[1]\">\n" +
-                            "               <driver>\n" +
-                            "                  <title>" + MotorAggregatorDataLoad.DataLoadVariables.driverTitle + "</title>\n" +
-                            "                  <firstName>" + MotorAggregatorDataLoad.DataLoadVariables.driverFirstName + "</firstName>\n" +
-                            "                  <lastName>" + MotorAggregatorDataLoad.DataLoadVariables.driverLastName + "</lastName>\n" +
-                            "                  <dob>" + MotorAggregatorDataLoad.DataLoadVariables.driverDateOfBirth + "</dob>\n" +
-                            "                  <sex>" + MotorAggregatorDataLoad.DataLoadVariables.driverGender + "</sex>\n" +
-                            "                  <occCd>" + MotorAggregatorDataLoad.DataLoadVariables.occCd + "</occCd>\n" +
-                            "                  <occDesc>" + MotorAggregatorDataLoad.DataLoadVariables.occDesc + "</occDesc>\n" +
-                            "                  <resStatusCd>" + MotorAggregatorDataLoad.DataLoadVariables.resStatusCd + "</resStatusCd>\n" +
-                            "                  <eveningNum>" + MotorAggregatorDataLoad.DataLoadVariables.eveningNum + "</eveningNum>\n" +
-                            "                  <daytimeNum>" + MotorAggregatorDataLoad.DataLoadVariables.daytimeNum + "</daytimeNum>\n" +
-                            "                  <emailAddress>" + MotorAggregatorDataLoad.DataLoadVariables.emailAddress + "</emailAddress>\n" +
-                            "                  <maritalCd>" + MotorAggregatorDataLoad.DataLoadVariables.maritalCd + "</maritalCd>\n" +
-                            "                  <ncdYrs>" + MotorAggregatorDataLoad.DataLoadVariables.ncdYrs + "</ncdYrs>\n" +
-                            "                  <relationCd>" + MotorAggregatorDataLoad.DataLoadVariables.relationCd + "</relationCd>\n" +
-                            "                  <license>\n" +
-                            "                     <typCd>" + MotorAggregatorDataLoad.DataLoadVariables.typCd + "</typCd>\n" +
-                            "                     <testPassedMonth>" + MotorAggregatorDataLoad.DataLoadVariables.testPassedMonth + "</testPassedMonth>\n" +
-                            "                     <testPassedYear>" + MotorAggregatorDataLoad.DataLoadVariables.testPassedYear + "</testPassedYear>\n" +
-                            "                     <licRestrictCd>" + MotorAggregatorDataLoad.DataLoadVariables.licRestrictCd + "</licRestrictCd>\n" +
-                            "                  </license>\n" +
-                            "                  <residency>\n" +
-                            "                     <livedUkMonth>" + MotorAggregatorDataLoad.DataLoadVariables.livedUkMonth + "</livedUkMonth>\n" +
-                            "                     <livedUkYear>" + MotorAggregatorDataLoad.DataLoadVariables.livedUkYear + "</livedUkYear>\n" +
-                            "                  </residency>\n" +
-                            "                  <requireDoc>" + MotorAggregatorDataLoad.DataLoadVariables.requireDoc + "</requireDoc>\n" +
-                            "                  <hasNonMotConv>" + MotorAggregatorDataLoad.DataLoadVariables.hasNonMotConv + "</hasNonMotConv>\n" +
-                            "                  <isHomeOwner>" + MotorAggregatorDataLoad.DataLoadVariables.isHomeOwner + "</isHomeOwner>\n" +
-                            "                  <hasChildUnder16>" + MotorAggregatorDataLoad.DataLoadVariables.hasChildUnder16 + "</hasChildUnder16>\n" +
-                            "                  <address>\n" +
-                            "                     <houseNumber>" + MotorAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                     <houseName xsi:nil=\"true\"/>\n" +
-                            "                     <streetName>" + MotorAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                     <town>" + MotorAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                     <county>" + MotorAggregatorDataLoad.DataLoadVariables.county + "</county>\n" +
-                            "                     <postcode>\n" +
-                            "                        <postCodeOut>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                        <postCodeIn>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                     </postcode>\n" +
-                            "                  </address>\n" +
-                            "               </driver>\n" +
-                            "            </drivers>\n" +
-                            "         </motorRequest>\n" +
-                            "      </getAggMotorQuote>\n" +
-                            "   </SOAP-ENV:Body>\n" +
-                            "</SOAP-ENV:Envelope>")
+                    .body(createMotorSoapBody())
                     .expect()
                     .statusCode(200)
                     .when().post(ConfigLoad.ConfigLoadVariables.DEV_ENVIRONMENT)
@@ -419,101 +82,7 @@ public class ExtractQuotes {
             quoteReference = given()
                     .header("Authorization", TestDataUtils.AuthorizationCredentials.BASIC_AUTHORIZATION)
                     .contentType("text/xml")
-                    .body("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
-                            "   <SOAP-ENV:Body>\n" +
-                            "      <getAggMotorQuote SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns=\"http://www.esure.com/SOA/ibisservice\">\n" +
-                            "         <motorRequest xmlns=\"java:com.esure.busservices.cdm.aggregator.request\">\n" +
-                            "            <aggId>" + MotorAggregatorDataLoad.DataLoadVariables.aggId + "</aggId>\n" +
-                            "            <brands SOAP-ENC:arrayType=\"Brand[1]\">\n" +
-                            "               <brand>\n" +
-                            "                  <brand>" + MotorAggregatorDataLoad.DataLoadVariables.brand + "</brand>\n" +
-                            "               </brand>\n" +
-                            "            </brands>\n" +
-                            "            <policy>\n" + MotorAggregatorDataLoad.DataLoadVariables.policy +
-                            "               <startDate>" + Utils.getLocalDate() + "T00:00:00</startDate>\n" +
-                            "               <currentInsurer>" + MotorAggregatorDataLoad.DataLoadVariables.currentInsurer + "</currentInsurer>\n" +
-                            "               <insuranceDeclined>" + MotorAggregatorDataLoad.DataLoadVariables.insuranceDeclined + "</insuranceDeclined>\n" +
-                            "               <prefPayMethCd>" + MotorAggregatorDataLoad.DataLoadVariables.prefPayMethCd + "</prefPayMethCd>\n" +
-                            "            </policy>\n" +
-                            "            <motorCov>\n" +
-                            "               <covTypCd>" + MotorAggregatorDataLoad.DataLoadVariables.covTypCd + "</covTypCd>\n" +
-                            "               <volXSCd>" + MotorAggregatorDataLoad.DataLoadVariables.volXSCd + "</volXSCd>\n" +
-                            "               <ncdProtect>" + MotorAggregatorDataLoad.DataLoadVariables.ncdProtect + "</ncdProtect>\n" +
-                            "               <numChildCd>" + MotorAggregatorDataLoad.DataLoadVariables.numChildCd + "</numChildCd>\n" +
-                            "               <useOfOtherVehicleCd>" + MotorAggregatorDataLoad.DataLoadVariables.useOfOtherVehicleCd + "</useOfOtherVehicleCd>\n" +
-                            "               <drvRestrictCd>" + MotorAggregatorDataLoad.DataLoadVariables.drvRestrictCd + "</drvRestrictCd>\n" +
-                            "               <vehicleNums>" + MotorAggregatorDataLoad.DataLoadVariables.vehicleNums + "</vehicleNums>\n" +
-                            "            </motorCov>\n" +
-                            "            <vehicle>\n" +
-                            "               <abiCd>" + MotorAggregatorDataLoad.DataLoadVariables.abiCd + "</abiCd>\n" +
-                            "               <annMileCd>" + MotorAggregatorDataLoad.DataLoadVariables.annMileCd + "</annMileCd>\n" +
-                            "               <annBusMiles>" + MotorAggregatorDataLoad.DataLoadVariables.annBusMiles + "</annBusMiles>\n" +
-                            "               <daySituCd>" + MotorAggregatorDataLoad.DataLoadVariables.daySituCd + "</daySituCd>\n" +
-                            "               <nightSituCd>" + MotorAggregatorDataLoad.DataLoadVariables.nightSituCd + "</nightSituCd>\n" +
-                            "               <isEstValRaw>" + MotorAggregatorDataLoad.DataLoadVariables.isEstValRaw + "</isEstValRaw>\n" +
-                            "               <notPurchasedYet>" + MotorAggregatorDataLoad.DataLoadVariables.notPurchasedYet + "</notPurchasedYet>\n" +
-                            "               <purchaseDate>" + MotorAggregatorDataLoad.DataLoadVariables.purchaseDate + "</purchaseDate>\n" +
-                            "               <estVal>" + MotorAggregatorDataLoad.DataLoadVariables.estVal + "</estVal>\n" +
-                            "               <regDate>" + MotorAggregatorDataLoad.DataLoadVariables.regDate + "</regDate>\n" +
-                            "               <vrm>" + MotorAggregatorDataLoad.DataLoadVariables.vrm + "</vrm>\n" +
-                            "               <riskPostcode>\n" +
-                            "                  <postCodeOut>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                  <postCodeIn>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "               </riskPostcode>\n" +
-                            "               <usage>" + MotorAggregatorDataLoad.DataLoadVariables.usage + "</usage>\n" +
-                            "               <secDevice>" + MotorAggregatorDataLoad.DataLoadVariables.secDevice + "</secDevice>\n" +
-                            "               <trackDevice>" + MotorAggregatorDataLoad.DataLoadVariables.trackDevice + "</trackDevice>\n" +
-                            "               <isImport>" + MotorAggregatorDataLoad.DataLoadVariables.isImport + "</isImport>\n" +
-                            "               <regKeeperCd>" + MotorAggregatorDataLoad.DataLoadVariables.regKeeperCd + "</regKeeperCd>\n" +
-                            "               <legalOwnerCd>" + MotorAggregatorDataLoad.DataLoadVariables.legalOwnerCd + "</legalOwnerCd>\n" +
-                            "            </vehicle>\n" +
-                            "            <drivers SOAP-ENC:arrayType=\"Driver[1]\">\n" +
-                            "               <driver>\n" +
-                            "                  <title>" + MotorAggregatorDataLoad.DataLoadVariables.driverTitle + "</title>\n" +
-                            "                  <firstName>" + MotorAggregatorDataLoad.DataLoadVariables.driverFirstName + "</firstName>\n" +
-                            "                  <lastName>" + MotorAggregatorDataLoad.DataLoadVariables.driverLastName + "</lastName>\n" +
-                            "                  <dob>" + MotorAggregatorDataLoad.DataLoadVariables.driverDateOfBirth + "</dob>\n" +
-                            "                  <sex>" + MotorAggregatorDataLoad.DataLoadVariables.driverGender + "</sex>\n" +
-                            "                  <occCd>" + MotorAggregatorDataLoad.DataLoadVariables.occCd + "</occCd>\n" +
-                            "                  <occDesc>" + MotorAggregatorDataLoad.DataLoadVariables.occDesc + "</occDesc>\n" +
-                            "                  <resStatusCd>" + MotorAggregatorDataLoad.DataLoadVariables.resStatusCd + "</resStatusCd>\n" +
-                            "                  <eveningNum>" + MotorAggregatorDataLoad.DataLoadVariables.eveningNum + "</eveningNum>\n" +
-                            "                  <daytimeNum>" + MotorAggregatorDataLoad.DataLoadVariables.daytimeNum + "</daytimeNum>\n" +
-                            "                  <emailAddress>" + MotorAggregatorDataLoad.DataLoadVariables.emailAddress + "</emailAddress>\n" +
-                            "                  <maritalCd>" + MotorAggregatorDataLoad.DataLoadVariables.maritalCd + "</maritalCd>\n" +
-                            "                  <ncdYrs>" + MotorAggregatorDataLoad.DataLoadVariables.ncdYrs + "</ncdYrs>\n" +
-                            "                  <relationCd>" + MotorAggregatorDataLoad.DataLoadVariables.relationCd + "</relationCd>\n" +
-                            "                  <license>\n" +
-                            "                     <typCd>" + MotorAggregatorDataLoad.DataLoadVariables.typCd + "</typCd>\n" +
-                            "                     <testPassedMonth>" + MotorAggregatorDataLoad.DataLoadVariables.testPassedMonth + "</testPassedMonth>\n" +
-                            "                     <testPassedYear>" + MotorAggregatorDataLoad.DataLoadVariables.testPassedYear + "</testPassedYear>\n" +
-                            "                     <licRestrictCd>" + MotorAggregatorDataLoad.DataLoadVariables.licRestrictCd + "</licRestrictCd>\n" +
-                            "                  </license>\n" +
-                            "                  <residency>\n" +
-                            "                     <livedUkMonth>" + MotorAggregatorDataLoad.DataLoadVariables.livedUkMonth + "</livedUkMonth>\n" +
-                            "                     <livedUkYear>" + MotorAggregatorDataLoad.DataLoadVariables.livedUkYear + "</livedUkYear>\n" +
-                            "                  </residency>\n" +
-                            "                  <requireDoc>" + MotorAggregatorDataLoad.DataLoadVariables.requireDoc + "</requireDoc>\n" +
-                            "                  <hasNonMotConv>" + MotorAggregatorDataLoad.DataLoadVariables.hasNonMotConv + "</hasNonMotConv>\n" +
-                            "                  <isHomeOwner>" + MotorAggregatorDataLoad.DataLoadVariables.isHomeOwner + "</isHomeOwner>\n" +
-                            "                  <hasChildUnder16>" + MotorAggregatorDataLoad.DataLoadVariables.hasChildUnder16 + "</hasChildUnder16>\n" +
-                            "                  <address>\n" +
-                            "                     <houseNumber>" + MotorAggregatorDataLoad.DataLoadVariables.houseNumber + "</houseNumber>\n" +
-                            "                     <houseName xsi:nil=\"true\"/>\n" +
-                            "                     <streetName>" + MotorAggregatorDataLoad.DataLoadVariables.streetName + "</streetName>\n" +
-                            "                     <town>" + MotorAggregatorDataLoad.DataLoadVariables.town + "</town>\n" +
-                            "                     <county>" + MotorAggregatorDataLoad.DataLoadVariables.county + "</county>\n" +
-                            "                     <postcode>\n" +
-                            "                        <postCodeOut>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeOut + "</postCodeOut>\n" +
-                            "                        <postCodeIn>" + MotorAggregatorDataLoad.DataLoadVariables.postCodeIn + "</postCodeIn>\n" +
-                            "                     </postcode>\n" +
-                            "                  </address>\n" +
-                            "               </driver>\n" +
-                            "            </drivers>\n" +
-                            "         </motorRequest>\n" +
-                            "      </getAggMotorQuote>\n" +
-                            "   </SOAP-ENV:Body>\n" +
-                            "</SOAP-ENV:Envelope>")
+                    .body(createMotorSoapBody())
                     .expect()
                     .statusCode(200)
                     .when().post(ConfigLoad.ConfigLoadVariables.TEST_ENVIRONMENT)
@@ -527,5 +96,585 @@ public class ExtractQuotes {
         }
 
         return quoteReference;
+    }
+
+    /**
+     * Helper method to create the SOAP body request for MOTOR using GOCompare model
+     * @return SOAP body request
+     */
+    public static String createMotorSoapBody() throws Exception {
+        MessageFactory factory = MessageFactory.newInstance();
+
+        SOAPMessage soapMsg = factory.createMessage();
+
+        SOAPPart part = soapMsg.getSOAPPart();
+
+        SOAPHeader header = part.getEnvelope().getHeader();
+        header.detachNode();
+
+        // Create SOAP envelope
+        SOAPEnvelope envelope = part.getEnvelope();
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.SOAP_ENC, TestDataUtils.SoapAssertions.SOAP_ENCODING);
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.XSI, TestDataUtils.SoapAssertions.SCHEMA_INSTANCE);
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.XSD, TestDataUtils.SoapAssertions.SOAP_SCHEMA);
+
+        // Create SOAP body
+        SOAPBody body = envelope.getBody();
+
+        // Create getAggMotor tag
+        QName getAggMotor = new QName(TestDataUtils.SoapAssertions.SOA_IBISSERVICE, TestDataUtils.SoapBody.GET_AGG_MOTOR);
+        SOAPBodyElement getAggMotorQuote = body.addBodyElement(getAggMotor);
+
+        // Create motorRequest tag
+        QName motor = new QName(TestDataUtils.SoapAssertions.AGGEGATOR_REQUEST, TestDataUtils.SoapBody.MOTOR_REQUEST);
+        SOAPElement motorRequest = getAggMotorQuote.addChildElement(motor);
+
+        SOAPElement agg = motorRequest.addChildElement(TestDataUtils.SoapBody.AGG_ID);
+        agg.setValue(MotorAggregatorDataLoad.DataLoadVariables.aggId);
+
+        // Create brands tag
+        SOAPElement brands = motorRequest.addChildElement(TestDataUtils.SoapBody.BRANDS);
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        Name name = soapFactory.createName("arrayType", TestDataUtils.SoapBody.SOAP_ENC, TestDataUtils.SoapAssertions.SOAP_ENCODING);
+        brands.addAttribute(name, "Brand[1]");
+
+        SOAPElement brand = brands.addChildElement(TestDataUtils.SoapBody.BRAND);
+        SOAPElement brand1 = brand.addChildElement(TestDataUtils.SoapBody.BRAND);
+        brand1.setValue(MotorAggregatorDataLoad.DataLoadVariables.brand);
+
+        // Create policy tag
+        SOAPElement policy = motorRequest.addChildElement(TestDataUtils.SoapBody.POLICY);
+        policy.setValue(MotorAggregatorDataLoad.DataLoadVariables.policy);
+
+        SOAPElement startDate = policy.addChildElement(TestDataUtils.SoapBody.START_DATE);
+        startDate.setValue(Utils.getLocalDate());
+        SOAPElement currentInsurer = policy.addChildElement(TestDataUtils.SoapBody.CURRENT_INSURER);
+        currentInsurer.setValue(MotorAggregatorDataLoad.DataLoadVariables.currentInsurer);
+
+        SOAPElement insuranceDeclined = policy.addChildElement(TestDataUtils.SoapBody.INSURANCE_DECLINED);
+        insuranceDeclined.setValue(MotorAggregatorDataLoad.DataLoadVariables.insuranceDeclined);
+        SOAPElement prefPayMethCd = policy.addChildElement(TestDataUtils.SoapBody.PREF_PAY_METH_CD);
+        prefPayMethCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.prefPayMethCd);
+
+        // Create motorCov tag
+        SOAPElement motorCov = motorRequest.addChildElement(TestDataUtils.SoapBody.MOTOR_COV);
+
+        SOAPElement covTypCd = motorCov.addChildElement(TestDataUtils.SoapBody.COV_TYP_CD);
+        covTypCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.covTypCd);
+
+        SOAPElement volXSCd = motorCov.addChildElement(TestDataUtils.SoapBody.VOL_XS_CD);
+        volXSCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.volXSCd);
+
+        SOAPElement ncdProtect = motorCov.addChildElement(TestDataUtils.SoapBody.NCD_PROTECT);
+        ncdProtect.setValue(MotorAggregatorDataLoad.DataLoadVariables.ncdProtect);
+
+        SOAPElement numChildCd = motorCov.addChildElement(TestDataUtils.SoapBody.NUM_CHILD_CD);
+        numChildCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.numChildCd);
+
+        SOAPElement useOfOtherVehicleCd = motorCov.addChildElement(TestDataUtils.SoapBody.OTHER_VEHICLE_USAGE);
+        useOfOtherVehicleCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.useOfOtherVehicleCd);
+
+        SOAPElement drvRestrictCd = motorCov.addChildElement(TestDataUtils.SoapBody.DRV_RESTRICT);
+        drvRestrictCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.drvRestrictCd);
+
+        SOAPElement vehicleNums = motorCov.addChildElement(TestDataUtils.SoapBody.NUM_VEHICLE);
+        vehicleNums.setValue(MotorAggregatorDataLoad.DataLoadVariables.vehicleNums);
+
+        // Create vehicle tag
+        SOAPElement vehicle = motorRequest.addChildElement(TestDataUtils.SoapBody.VEHICLE);
+        SOAPElement abiCd = vehicle.addChildElement(TestDataUtils.SoapBody.ABI_CD);
+        abiCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.abiCd);
+
+        SOAPElement annMileCd = vehicle.addChildElement(TestDataUtils.SoapBody.ANNUAL_MILE);
+        annMileCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.annMileCd);
+
+        SOAPElement annBusMiles = vehicle.addChildElement(TestDataUtils.SoapBody.ANNUAL_BUS_MILE);
+        annBusMiles.setValue(MotorAggregatorDataLoad.DataLoadVariables.annBusMiles);
+
+        SOAPElement daySituCd = vehicle.addChildElement(TestDataUtils.SoapBody.DAY_SITU);
+        daySituCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.daySituCd);
+
+        SOAPElement nightSituCd = vehicle.addChildElement(TestDataUtils.SoapBody.NIGHT_SITU);
+        nightSituCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.nightSituCd);
+
+        SOAPElement isEstValRaw = vehicle.addChildElement(TestDataUtils.SoapBody.IS_EST_VAL);
+        isEstValRaw.setValue(MotorAggregatorDataLoad.DataLoadVariables.isEstValRaw);
+
+        SOAPElement notPurchasedYet = vehicle.addChildElement(TestDataUtils.SoapBody.NOT_PURCHASED);
+        notPurchasedYet.setValue(MotorAggregatorDataLoad.DataLoadVariables.notPurchasedYet);
+
+        SOAPElement purchaseDate = vehicle.addChildElement(TestDataUtils.SoapBody.PURCHASE_DATE);
+        purchaseDate.setValue(MotorAggregatorDataLoad.DataLoadVariables.purchaseDate);
+
+        SOAPElement estVal = vehicle.addChildElement(TestDataUtils.SoapBody.EST_VAL);
+        estVal.setValue(MotorAggregatorDataLoad.DataLoadVariables.estVal);
+
+        SOAPElement regDate = vehicle.addChildElement(TestDataUtils.SoapBody.REG_DATE);
+        regDate.setValue(MotorAggregatorDataLoad.DataLoadVariables.regDate);
+
+        SOAPElement vrm = vehicle.addChildElement(TestDataUtils.SoapBody.VRM);
+        vrm.setValue(MotorAggregatorDataLoad.DataLoadVariables.vrm);
+
+        SOAPElement riskPostcode = vehicle.addChildElement(TestDataUtils.SoapBody.RISK_POSTCODE);
+        SOAPElement postCodeOut = riskPostcode.addChildElement(TestDataUtils.SoapBody.POSTCODE_OUT);
+        postCodeOut.setValue(MotorAggregatorDataLoad.DataLoadVariables.postCodeOut);
+
+        SOAPElement postCodeIn = riskPostcode.addChildElement(TestDataUtils.SoapBody.POSTCODE_IN);
+        postCodeIn.setValue(MotorAggregatorDataLoad.DataLoadVariables.postCodeIn);
+
+        SOAPElement usage = vehicle.addChildElement(TestDataUtils.SoapBody.USAGE);
+        usage.setValue(MotorAggregatorDataLoad.DataLoadVariables.usage);
+
+        SOAPElement secDevice = vehicle.addChildElement(TestDataUtils.SoapBody.SEC_DEVICE);
+        secDevice.setValue(MotorAggregatorDataLoad.DataLoadVariables.secDevice);
+
+        SOAPElement trackDevice = vehicle.addChildElement(TestDataUtils.SoapBody.TRACK_DEVICE);
+        trackDevice.setValue(MotorAggregatorDataLoad.DataLoadVariables.trackDevice);
+
+        SOAPElement isImport = vehicle.addChildElement(TestDataUtils.SoapBody.IS_IMPORT);
+        isImport.setValue(MotorAggregatorDataLoad.DataLoadVariables.isImport);
+
+        SOAPElement regKeeperCd = vehicle.addChildElement(TestDataUtils.SoapBody.REG_KEEPER);
+        regKeeperCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.regKeeperCd);
+
+        SOAPElement legalOwnerCd = vehicle.addChildElement(TestDataUtils.SoapBody.LEGAL_OWNER);
+        legalOwnerCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.legalOwnerCd);
+
+        SOAPElement drivers = motorRequest.addChildElement(TestDataUtils.SoapBody.DRIVERS);
+        drivers.addAttribute(name, "Driver[1]");
+
+        SOAPElement driver = drivers.addChildElement(TestDataUtils.SoapBody.DRIVER);
+        SOAPElement title = driver.addChildElement(TestDataUtils.SoapBody.TITLE);
+        title.setValue(MotorAggregatorDataLoad.DataLoadVariables.driverTitle);
+
+        SOAPElement firstName = driver.addChildElement(TestDataUtils.SoapBody.FIRST_NAME);
+        firstName.setValue(MotorAggregatorDataLoad.DataLoadVariables.driverFirstName);
+
+        SOAPElement lastName = driver.addChildElement(TestDataUtils.SoapBody.LAST_NAME);
+        lastName.setValue(MotorAggregatorDataLoad.DataLoadVariables.driverLastName);
+
+        SOAPElement dob = driver.addChildElement(TestDataUtils.SoapBody.DOB);
+        dob.setValue(MotorAggregatorDataLoad.DataLoadVariables.driverDateOfBirth);
+
+        SOAPElement sex = driver.addChildElement(TestDataUtils.SoapBody.GENDER);
+        sex.setValue(MotorAggregatorDataLoad.DataLoadVariables.driverGender);
+
+        SOAPElement occCd = driver.addChildElement(TestDataUtils.SoapBody.OCC_CD);
+        occCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.occCd);
+
+        SOAPElement occDesc = driver.addChildElement(TestDataUtils.SoapBody.OCC_DESC);
+        occDesc.setValue(MotorAggregatorDataLoad.DataLoadVariables.occDesc);
+
+        SOAPElement resStatusCd = driver.addChildElement(TestDataUtils.SoapBody.RES_STATUS_CD);
+        resStatusCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.resStatusCd);
+
+        SOAPElement eveningNum = driver.addChildElement(TestDataUtils.SoapBody.EVENING_NUM);
+        eveningNum.setValue(MotorAggregatorDataLoad.DataLoadVariables.eveningNum);
+
+        SOAPElement daytimeNum = driver.addChildElement(TestDataUtils.SoapBody.DAYTIME_NUM);
+        daytimeNum.setValue(MotorAggregatorDataLoad.DataLoadVariables.daytimeNum);
+
+        SOAPElement emailAddress = driver.addChildElement(TestDataUtils.SoapBody.EMAIL);
+        emailAddress.setValue(MotorAggregatorDataLoad.DataLoadVariables.emailAddress);
+
+        SOAPElement maritalCd = driver.addChildElement(TestDataUtils.SoapBody.MARITAL_CD);
+        maritalCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.maritalCd);
+
+        SOAPElement ncdYrs = driver.addChildElement(TestDataUtils.SoapBody.NCD_YEARS);
+        ncdYrs.setValue(MotorAggregatorDataLoad.DataLoadVariables.ncdYrs);
+
+        SOAPElement relationCd = driver.addChildElement(TestDataUtils.SoapBody.RELATION_CD);
+        relationCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.relationCd);
+
+        SOAPElement license = driver.addChildElement(TestDataUtils.SoapBody.LICENSE);
+        SOAPElement typCd = license.addChildElement(TestDataUtils.SoapBody.TYP_CD);
+        typCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.typCd);
+
+        SOAPElement testPassedMonth = license.addChildElement(TestDataUtils.SoapBody.TEST_PASSED_MONTH);
+        testPassedMonth.setValue(MotorAggregatorDataLoad.DataLoadVariables.testPassedMonth);
+
+        SOAPElement testPassedYear = license.addChildElement(TestDataUtils.SoapBody.TEST_PASSED_YEAR);
+        testPassedYear.setValue(MotorAggregatorDataLoad.DataLoadVariables.testPassedYear);
+
+        SOAPElement licRestrictCd = license.addChildElement(TestDataUtils.SoapBody.LIC_RESTRICTED_CD);
+        licRestrictCd.setValue(MotorAggregatorDataLoad.DataLoadVariables.licRestrictCd);
+
+        SOAPElement residency = driver.addChildElement(TestDataUtils.SoapBody.RESIDENCY);
+        SOAPElement livedUkMonth = residency.addChildElement(TestDataUtils.SoapBody.LIVED_UK_MONTH);
+        livedUkMonth.setValue(MotorAggregatorDataLoad.DataLoadVariables.livedUkMonth);
+
+        SOAPElement livedUkYear = residency.addChildElement(TestDataUtils.SoapBody.LIVED_UK_YEAR);
+        livedUkYear.setValue(MotorAggregatorDataLoad.DataLoadVariables.livedUkYear);
+
+        SOAPElement requireDoc = driver.addChildElement(TestDataUtils.SoapBody.REQUIRE_DOC);
+        requireDoc.setValue(MotorAggregatorDataLoad.DataLoadVariables.requireDoc);
+
+        SOAPElement hasNonMotConv = driver.addChildElement(TestDataUtils.SoapBody.HAS_MON_MOT_CONV);
+        hasNonMotConv.setValue(MotorAggregatorDataLoad.DataLoadVariables.hasNonMotConv);
+
+        SOAPElement isHomeOwner = driver.addChildElement(TestDataUtils.SoapBody.IS_HOME_OWNER);
+        isHomeOwner.setValue(MotorAggregatorDataLoad.DataLoadVariables.isHomeOwner);
+
+        SOAPElement hasChildUnder16 = driver.addChildElement(TestDataUtils.SoapBody.CHILD_UNDER_16);
+        hasChildUnder16.setValue(MotorAggregatorDataLoad.DataLoadVariables.hasChildUnder16);
+
+        SOAPElement address = driver.addChildElement(TestDataUtils.SoapBody.ADDRESS);
+        SOAPElement houseNumber = address.addChildElement(TestDataUtils.SoapBody.HOUSE_NUMBER);
+        houseNumber.setValue(MotorAggregatorDataLoad.DataLoadVariables.houseNumber);
+
+        SOAPElement streetName = address.addChildElement(TestDataUtils.SoapBody.STREET_NAME);
+        streetName.setValue(MotorAggregatorDataLoad.DataLoadVariables.streetName);
+
+        SOAPElement town = address.addChildElement(TestDataUtils.SoapBody.TOWN);
+        town.setValue(MotorAggregatorDataLoad.DataLoadVariables.town);
+
+        SOAPElement county = address.addChildElement(TestDataUtils.SoapBody.COUNTY);
+        county.setValue(MotorAggregatorDataLoad.DataLoadVariables.county);
+
+        SOAPElement postcode = address.addChildElement(TestDataUtils.SoapBody.POSTCODE);
+        SOAPElement postCodeOut1 = postcode.addChildElement(TestDataUtils.SoapBody.POSTCODE_OUT);
+        postCodeOut1.setValue(MotorAggregatorDataLoad.DataLoadVariables.postCodeOut);
+
+        SOAPElement postCodeIn1 = postcode.addChildElement(TestDataUtils.SoapBody.POSTCODE_IN);
+        postCodeIn1.setValue(MotorAggregatorDataLoad.DataLoadVariables.postCodeIn);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        soapMsg.writeTo(out);
+
+        return out.toString();
+    }
+
+    /**
+     * Helper method to create the SOAP body request for HOME using Confused model
+     * @return SOAP body request
+     */
+    public static String createHomeSoapBody() throws Exception {
+        MessageFactory factory = MessageFactory.newInstance();
+
+        SOAPMessage soapMsg = factory.createMessage();
+
+        SOAPPart part = soapMsg.getSOAPPart();
+
+        SOAPHeader header = part.getEnvelope().getHeader();
+        header.detachNode();
+
+        // Create SOAP envelope
+        SOAPEnvelope envelope = part.getEnvelope();
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.SOAP_ENC, TestDataUtils.SoapAssertions.SOAP_ENCODING);
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.XSI, TestDataUtils.SoapAssertions.SCHEMA_INSTANCE);
+        envelope.addNamespaceDeclaration(TestDataUtils.SoapBody.XSD, TestDataUtils.SoapAssertions.SOAP_SCHEMA);
+
+        // Create SOAP body
+        SOAPBody body = envelope.getBody();
+
+        // Create getAggMotor tag
+        QName getAggHome = new QName(TestDataUtils.SoapAssertions.SOA_IBISSERVICE, TestDataUtils.SoapBody.GET_AGG_HOME);
+        SOAPBodyElement getAggHomeQuote = body.addBodyElement(getAggHome);
+
+        // Create homeRequest tag
+        QName home = new QName(TestDataUtils.SoapAssertions.AGGEGATOR_REQUEST, TestDataUtils.SoapBody.HOME_REQUEST);
+        SOAPElement homeRequest = getAggHomeQuote.addChildElement(home);
+
+        SOAPElement agg = homeRequest.addChildElement(TestDataUtils.SoapBody.AGG_ID);
+        agg.setValue(HomeAggregatorDataLoad.DataLoadVariables.aggId);
+
+        // Create brands tag
+        SOAPElement brands = homeRequest.addChildElement(TestDataUtils.SoapBody.BRANDS);
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        Name name = soapFactory.createName("arrayType", TestDataUtils.SoapBody.SOAP_ENC, TestDataUtils.SoapAssertions.SOAP_ENCODING);
+        brands.addAttribute(name, "Brand[1]");
+
+        SOAPElement brand = brands.addChildElement(TestDataUtils.SoapBody.BRAND);
+        SOAPElement brand1 = brand.addChildElement(TestDataUtils.SoapBody.BRAND);
+        brand1.setValue(HomeAggregatorDataLoad.DataLoadVariables.brand);
+
+        // Create assumptions tag
+        SOAPElement assumptions = homeRequest.addChildElement(TestDataUtils.SoapBody.ASSUMPTIONS);
+
+        SOAPElement specialTermsFlag = assumptions.addChildElement(TestDataUtils.SoapBody.SPECIAL_TERMS_FLAG);
+        specialTermsFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.specialTermsFlag);
+
+        SOAPElement convictionPendFlag = assumptions.addChildElement(TestDataUtils.SoapBody.CONVICTION_PEND_FLAG);
+        convictionPendFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.convictionPendFlag);
+
+        SOAPElement repairStateFlag = assumptions.addChildElement(TestDataUtils.SoapBody.REPAIR_STATE_FLAG);
+        repairStateFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.repairStateFlag);
+
+        SOAPElement holidayHomeFlag = assumptions.addChildElement(TestDataUtils.SoapBody.HOLIDAY_HOME_FLAG);
+        holidayHomeFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.holidayHomeFlag);
+
+        SOAPElement unoccupiedFlag = assumptions.addChildElement(TestDataUtils.SoapBody.UNOCCUPIED_FLAG);
+        unoccupiedFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.unoccupiedFlag);
+
+        SOAPElement floodFlag = assumptions.addChildElement(TestDataUtils.SoapBody.FLOOD_FLAG);
+        floodFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.floodFlag);
+
+        SOAPElement subsidenceFlag = assumptions.addChildElement(TestDataUtils.SoapBody.SUBSIDENCE_FLAG);
+        subsidenceFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.subsidenceFlag);
+
+        SOAPElement listedFlag = assumptions.addChildElement(TestDataUtils.SoapBody.LISTED_FLAG);
+        listedFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.listedFlag);
+
+        SOAPElement businessFlag = assumptions.addChildElement(TestDataUtils.SoapBody.BUSINESS_FLAG);
+        businessFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.businessFlag);
+
+        SOAPElement treeDamageFlag = assumptions.addChildElement(TestDataUtils.SoapBody.TREE_DEMAGE_FLAG);
+        treeDamageFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.treeDamageFlag);
+
+        SOAPElement tallTreeNearbyFlag = assumptions.addChildElement(TestDataUtils.SoapBody.TALL_TREE_NEARBY_FLAG);
+        tallTreeNearbyFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.tallTreeNearbyFlag);
+
+        SOAPElement buildingInProgressFlag = assumptions.addChildElement(TestDataUtils.SoapBody.BUILDING_IN_PROGRESS_FLAG);
+        buildingInProgressFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.buildingInProgressFlag);
+
+        SOAPElement prevInsBldCd = assumptions.addChildElement(TestDataUtils.SoapBody.PREV_INS_BLD_CD);
+        prevInsBldCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.prevInsBldCd);
+
+        SOAPElement rebuildingValue = assumptions.addChildElement(TestDataUtils.SoapBody.REBUILDING_VALUE);
+        rebuildingValue.setValue(HomeAggregatorDataLoad.DataLoadVariables.rebuildingValue);
+
+        SOAPElement yearsBldInsWithoutClaim = assumptions.addChildElement(TestDataUtils.SoapBody.YEARS_WITHOUT_CLAIM);
+        yearsBldInsWithoutClaim.setValue(HomeAggregatorDataLoad.DataLoadVariables.yearsBldInsWithoutClaim);
+
+        SOAPElement propertyValue = assumptions.addChildElement(TestDataUtils.SoapBody.PROPERTY_VALUE);
+        propertyValue.setValue(HomeAggregatorDataLoad.DataLoadVariables.propertyValue);
+
+        SOAPElement prevInsConCd = assumptions.addChildElement(TestDataUtils.SoapBody.PREV_INS_CON_CD);
+        prevInsConCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.prevInsConCd);
+
+        SOAPElement forSaleFlag = assumptions.addChildElement(TestDataUtils.SoapBody.FOR_SALE_FLAG);
+        forSaleFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.forSaleFlag);
+
+        SOAPElement bankruptFlag = assumptions.addChildElement(TestDataUtils.SoapBody.BANKRUPT_FLAG);
+        bankruptFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.bankruptFlag);
+
+        SOAPElement smokersFlag = assumptions.addChildElement(TestDataUtils.SoapBody.SMOKERS_FLAG);
+        smokersFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.smokersFlag);
+
+        SOAPElement nWatchAreaFlag = assumptions.addChildElement(TestDataUtils.SoapBody.WATCH_AREA_FLAG);
+        nWatchAreaFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.nWatchAreaFlag);
+
+        SOAPElement nWatchMemberFlag = assumptions.addChildElement(TestDataUtils.SoapBody.WATCH_MEMBER_FLAG);
+        nWatchMemberFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.nWatchMemberFlag);
+
+        SOAPElement burglarAlarmCd = assumptions.addChildElement(TestDataUtils.SoapBody.BURGLAR_ALARM_CD);
+        burglarAlarmCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.burglarAlarmCd);
+
+        SOAPElement alarmProfessionalFlag = assumptions.addChildElement(TestDataUtils.SoapBody.ALARM_PROFESSIONAL);
+        alarmProfessionalFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.alarmProfessionalFlag);
+
+        SOAPElement alarmPoliceFlag = assumptions.addChildElement(TestDataUtils.SoapBody.ALARM_POLICE);
+        alarmPoliceFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.alarmPoliceFlag);
+
+        SOAPElement jointPropBankruptFlag = assumptions.addChildElement(TestDataUtils.SoapBody.JOINT_PROP_BANKRUPT);
+        jointPropBankruptFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.jointPropBankruptFlag);
+
+        SOAPElement occupiedByFamilyFlag = assumptions.addChildElement(TestDataUtils.SoapBody.OCCUPIED_BY_FAMILY);
+        occupiedByFamilyFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.occupiedByFamilyFlag);
+
+        SOAPElement selfContainedFlag = assumptions.addChildElement(TestDataUtils.SoapBody.SELF_CONTAINED_FLAG);
+        selfContainedFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.selfContainedFlag);
+
+        // Create buildings tag
+        SOAPElement buildings = homeRequest.addChildElement(TestDataUtils.SoapBody.BUILDINGS);
+
+        SOAPElement coverLevel = buildings.addChildElement(TestDataUtils.SoapBody.COVER_LEVEL);
+        coverLevel.setValue(HomeAggregatorDataLoad.DataLoadVariables.coverLevel);
+
+        SOAPElement ncdProtect = buildings.addChildElement(TestDataUtils.SoapBody.NCD_PROTECT);
+        ncdProtect.setValue(HomeAggregatorDataLoad.DataLoadVariables.ncdProtect);
+
+        SOAPElement ncdYears = buildings.addChildElement(TestDataUtils.SoapBody.NCD_YEARS);
+        ncdYears.setValue(HomeAggregatorDataLoad.DataLoadVariables.ncdYrs);
+
+        SOAPElement sumIns = buildings.addChildElement(TestDataUtils.SoapBody.SUMS_INS);
+        sumIns.setValue(HomeAggregatorDataLoad.DataLoadVariables.sumIns);
+
+        SOAPElement volXs = buildings.addChildElement(TestDataUtils.SoapBody.VOL_XS);
+        volXs.setValue(HomeAggregatorDataLoad.DataLoadVariables.volXs);
+
+        SOAPElement claims = buildings.addChildElement(TestDataUtils.SoapBody.CLAIMS);
+        claims.addAttribute(name, "HomeClaim[0]");
+
+        // Create policy tag
+        SOAPElement policy = homeRequest.addChildElement(TestDataUtils.SoapBody.POLICY);
+        SOAPElement startDate = policy.addChildElement(TestDataUtils.SoapBody.START_DATE);
+        startDate.setValue(Utils.getLocalDate());
+
+        SOAPElement insuranceDeclined = policy.addChildElement(TestDataUtils.SoapBody.INSURANCE_DECLINED);
+        insuranceDeclined.setValue(HomeAggregatorDataLoad.DataLoadVariables.insuranceDeclined);
+
+        SOAPElement currentInsurer = policy.addChildElement(TestDataUtils.SoapBody.CURRENT_INSURER);
+        currentInsurer.setValue(HomeAggregatorDataLoad.DataLoadVariables.currentInsurer);
+
+        SOAPElement yearsCurrentInsurer = policy.addChildElement(TestDataUtils.SoapBody.YEARS_CURRENT_INSURER);
+        yearsCurrentInsurer.setValue(HomeAggregatorDataLoad.DataLoadVariables.yearsCurrentInsurer);
+
+        // Create property tag
+        SOAPElement property = homeRequest.addChildElement(TestDataUtils.SoapBody.PROPERTY);
+        SOAPElement address = property.addChildElement(TestDataUtils.SoapBody.ADDRESS);
+
+        SOAPElement houseNumber = address.addChildElement(TestDataUtils.SoapBody.HOUSE_NUMBER);
+        houseNumber.setValue(HomeAggregatorDataLoad.DataLoadVariables.houseNumber);
+
+        SOAPElement streetName = address.addChildElement(TestDataUtils.SoapBody.STREET_NAME);
+        streetName.setValue(HomeAggregatorDataLoad.DataLoadVariables.streetName);
+
+        SOAPElement town = address.addChildElement(TestDataUtils.SoapBody.TOWN);
+        town.setValue(HomeAggregatorDataLoad.DataLoadVariables.town);
+
+        SOAPElement county = address.addChildElement(TestDataUtils.SoapBody.COUNTY);
+        county.setValue(HomeAggregatorDataLoad.DataLoadVariables.county);
+
+        SOAPElement postCode = address.addChildElement(TestDataUtils.SoapBody.POSTCODE);
+        SOAPElement postCodeOut = postCode.addChildElement(TestDataUtils.SoapBody.POSTCODE_OUT);
+        postCodeOut.setValue(HomeAggregatorDataLoad.DataLoadVariables.postCodeOut);
+
+        SOAPElement postCodeIn = postCode.addChildElement(TestDataUtils.SoapBody.POSTCODE_IN);
+        postCodeIn.setValue(HomeAggregatorDataLoad.DataLoadVariables.postCodeIn);
+
+        SOAPElement firstTimeBuyer = property.addChildElement(TestDataUtils.SoapBody.FIRST_TIME_BUYER);
+        firstTimeBuyer.setValue(HomeAggregatorDataLoad.DataLoadVariables.firstTimeBuyer);
+
+        SOAPElement locks = property.addChildElement(TestDataUtils.SoapBody.LOCKS);
+        locks.setValue(HomeAggregatorDataLoad.DataLoadVariables.locks);
+
+        SOAPElement nacoss = property.addChildElement(TestDataUtils.SoapBody.NACOSS);
+        nacoss.setValue(HomeAggregatorDataLoad.DataLoadVariables.nacoss);
+
+        SOAPElement bedsCd = property.addChildElement(TestDataUtils.SoapBody.BEDS_CD);
+        bedsCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.bedsCd);
+
+        SOAPElement addRoomsCd = property.addChildElement(TestDataUtils.SoapBody.ADD_ROOMS_CD);
+        addRoomsCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.addRoomsCd);
+
+        SOAPElement numAdultCd = property.addChildElement(TestDataUtils.SoapBody.NUM_ADULT_CD);
+        numAdultCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.numAdultCd);
+
+        SOAPElement numChildCd = property.addChildElement(TestDataUtils.SoapBody.NUM_CHILD_CD);
+        numChildCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.numChildCd);
+
+        SOAPElement ownCd = property.addChildElement(TestDataUtils.SoapBody.OWN_CD);
+        ownCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.ownCd);
+
+        SOAPElement propCd = property.addChildElement(TestDataUtils.SoapBody.PROP_CD);
+        propCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.propCd);
+
+        SOAPElement roofCd = property.addChildElement(TestDataUtils.SoapBody.ROOF_CD);
+        roofCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.roofCd);
+
+        SOAPElement wallCd = property.addChildElement(TestDataUtils.SoapBody.WALL_CD);
+        wallCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.wallCd);
+
+        SOAPElement builtCd = property.addChildElement(TestDataUtils.SoapBody.BUILT_CD);
+        builtCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.builtCd);
+
+        SOAPElement currentMortgageProvider = property.addChildElement(TestDataUtils.SoapBody.CURRENT_MORTGAGE_PROVIDER);
+        currentMortgageProvider.setValue(HomeAggregatorDataLoad.DataLoadVariables.currentMortgageProvider);
+
+        // Create proposers tag
+        SOAPElement proposers = homeRequest.addChildElement(TestDataUtils.SoapBody.PROPOSERS);
+        proposers.addAttribute(name, "HomeProposer[1]");
+
+        SOAPElement proposer = proposers.addChildElement(TestDataUtils.SoapBody.PROPOSER);
+        SOAPElement title = proposer.addChildElement(TestDataUtils.SoapBody.TITLE);
+        title.setValue(HomeAggregatorDataLoad.DataLoadVariables.proposerTitle);
+
+        SOAPElement firstName = proposer.addChildElement(TestDataUtils.SoapBody.FIRST_NAME);
+        firstName.setValue(HomeAggregatorDataLoad.DataLoadVariables.proposerFirstName);
+
+        SOAPElement lastName = proposer.addChildElement(TestDataUtils.SoapBody.LAST_NAME);
+        lastName.setValue(HomeAggregatorDataLoad.DataLoadVariables.proposerLastName);
+
+        SOAPElement dob = proposer.addChildElement(TestDataUtils.SoapBody.DOB);
+        dob.setValue(HomeAggregatorDataLoad.DataLoadVariables.proposerDateOfBirth);
+
+        SOAPElement sex = proposer.addChildElement(TestDataUtils.SoapBody.GENDER);
+        sex.setValue(HomeAggregatorDataLoad.DataLoadVariables.proposerGender);
+
+        SOAPElement occCd = proposer.addChildElement(TestDataUtils.SoapBody.OCC_CD);
+        occCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.occCd);
+
+        SOAPElement occDesc = proposer.addChildElement(TestDataUtils.SoapBody.OCC_DESC);
+        occDesc.setValue(HomeAggregatorDataLoad.DataLoadVariables.occDesc);
+
+        SOAPElement eveningNum = proposer.addChildElement(TestDataUtils.SoapBody.EVENING_NUM);
+        eveningNum.setValue(HomeAggregatorDataLoad.DataLoadVariables.eveningNum);
+
+        SOAPElement daytimeNum = proposer.addChildElement(TestDataUtils.SoapBody.DAYTIME_NUM);
+        daytimeNum.setValue(HomeAggregatorDataLoad.DataLoadVariables.daytimeNum);
+
+        SOAPElement emailAddress = proposer.addChildElement(TestDataUtils.SoapBody.EMAIL);
+        emailAddress.setValue(HomeAggregatorDataLoad.DataLoadVariables.emailAddress);
+
+        SOAPElement maritalCd = proposer.addChildElement(TestDataUtils.SoapBody.MARITAL_CD);
+        maritalCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.maritalCd);
+
+        SOAPElement relationCd = proposer.addChildElement(TestDataUtils.SoapBody.RELATION_CD);
+        relationCd.setValue(HomeAggregatorDataLoad.DataLoadVariables.relationCd);
+
+        SOAPElement address1 = proposer.addChildElement(TestDataUtils.SoapBody.ADDRESS);
+        SOAPElement houseNumber1 = address1.addChildElement(TestDataUtils.SoapBody.HOUSE_NUMBER);
+        houseNumber1.setValue(HomeAggregatorDataLoad.DataLoadVariables.houseNumber);
+
+        SOAPElement streetName1 = address1.addChildElement(TestDataUtils.SoapBody.STREET_NAME);
+        streetName1.setValue(HomeAggregatorDataLoad.DataLoadVariables.streetName);
+
+        SOAPElement town1 = address1.addChildElement(TestDataUtils.SoapBody.TOWN);
+        town1.setValue(HomeAggregatorDataLoad.DataLoadVariables.town);
+
+        SOAPElement county1 = address1.addChildElement(TestDataUtils.SoapBody.COUNTY);
+        county1.setValue(HomeAggregatorDataLoad.DataLoadVariables.county);
+
+        SOAPElement postcode1 = address1.addChildElement(TestDataUtils.SoapBody.POSTCODE);
+        SOAPElement postCodeOut1 = postcode1.addChildElement(TestDataUtils.SoapBody.POSTCODE_OUT);
+        postCodeOut1.setValue(HomeAggregatorDataLoad.DataLoadVariables.postCodeOut);
+
+        SOAPElement postCodeIn1 = postcode1.addChildElement(TestDataUtils.SoapBody.POSTCODE_IN);
+        postCodeIn1.setValue(HomeAggregatorDataLoad.DataLoadVariables.postCodeIn);
+
+        SOAPElement residency = proposer.addChildElement(TestDataUtils.SoapBody.RESIDENCY);
+        SOAPElement livedUkMonth = residency.addChildElement(TestDataUtils.SoapBody.LIVED_UK_MONTH);
+        livedUkMonth.setValue(HomeAggregatorDataLoad.DataLoadVariables.livedUkMonth);
+
+        SOAPElement livedUkYear = residency.addChildElement(TestDataUtils.SoapBody.LIVED_UK_YEAR);
+        livedUkYear.setValue(HomeAggregatorDataLoad.DataLoadVariables.livedUkYear);
+
+        SOAPElement isHomeOwner = proposer.addChildElement(TestDataUtils.SoapBody.IS_HOME_OWNER);
+        isHomeOwner.setValue(HomeAggregatorDataLoad.DataLoadVariables.isHomeOwner);
+
+        SOAPElement yearsAtRiskAddress = proposer.addChildElement(TestDataUtils.SoapBody.YEARS_RISK_ADDRESS);
+        yearsAtRiskAddress.setValue(HomeAggregatorDataLoad.DataLoadVariables.yearsAtRiskAddress);
+
+        // Create requiredCovers tag
+        SOAPElement requiredCovers = homeRequest.addChildElement(TestDataUtils.SoapBody.REQUIRE_COVERS);
+        SOAPElement buildVarFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.BUILD_VAR_FLAG);
+        buildVarFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.buildVarFlag);
+
+        SOAPElement buildingsFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.BUILDINGS_FLAG);
+        buildingsFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.buildingsFlag);
+
+        SOAPElement contentsFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.CONTENTS_FLAG);
+        contentsFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.contentsFlag);
+
+        SOAPElement emergencyFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.EMERGENCY_FLAG);
+        emergencyFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.emergencyFlag);
+
+        SOAPElement flpFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.FLP_FLAG);
+        flpFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.flpFlag);
+
+        SOAPElement persPossFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.PERS_POSS_FLAG);
+        persPossFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.persPossFlag);
+
+        SOAPElement pestFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.PEST_FLAG);
+        pestFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.pestFlag);
+
+        SOAPElement specifiedItemsFlag = requiredCovers.addChildElement(TestDataUtils.SoapBody.SPECIFIED_ITEMS_FLAG);
+        specifiedItemsFlag.setValue(HomeAggregatorDataLoad.DataLoadVariables.specifiedItemsFlag);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        soapMsg.writeTo(out);
+
+        return out.toString();
     }
 }
